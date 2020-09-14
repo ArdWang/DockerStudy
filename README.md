@@ -164,7 +164,7 @@ ls
 docker run -it -p 9000:8080 -p 9001:8085 -v /home/project:/soft --privileged --name myjava  docker.io/java bash
 
  进入之后
-'''java
+```java
 root@0ebddd7a520a:/# 
 
 bash: cd: /soft#: No such file or directory
@@ -185,7 +185,7 @@ hello.txt
 Thanks
 [root@localhost project]# 
 
-'''
+```
 
 
 停止容器
@@ -198,7 +198,7 @@ docker stop myjava
 
 docker start -i myjava
 
-'''
+```java
 ARNING! The remote SSH server rejected X11 forwarding request.
 Last login: Mon Sep 14 17:56:13 2020 from 192.168.3.37
 [root@localhost ~]# docker pause myjava
@@ -212,7 +212,7 @@ myjava
 [root@localhost ~]# docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 [root@localhost ~]# 
-'''
+```
 
 
 
