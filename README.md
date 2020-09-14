@@ -120,6 +120,99 @@ service docker start
 service docker stop
 service docker restart
 
+在线安装镜像
+
+设置加速器 http://get.daocloud.io/#install-docker
+
+curl -sSL https://get.daocloud.io/docker | sh
+
+java镜像
+
+docker search java
+
+docker pull java
+
+使用 docker pull  docker.io/java
+
+docker 安装镜像
+docker images
+
+save 保存镜像  docker save java > /home/java.tar.gz
+
+导出镜像  docker load < /home/java.tar.gz
+
+docker images
+
+docker rmi java
+
+启动容器
+
+docker run -it --name java bash
+
+映射端口 -p 真实宿主机子
+docker run -it --name myjava -p 9000:8000 -p 9001:8085 java bash  
+
+文件目录的映射 宿主机目录:
+docker run -it --name myjava -v /home/project:/soft --privileged java bash 
+
+cd /home 
+
+mikdir project
+
+ls
+
+docker run -it -p 9000:8080 -p 9001:8085 -v /home/project:/soft --privileged --name myjava  docker.io/java bash
+
+ 进入之后
+'''
+root@0ebddd7a520a:/# 
+
+bash: cd: /soft#: No such file or directory
+root@0ebddd7a520a:/# cd /soft
+root@0ebddd7a520a:/soft# ls
+root@0ebddd7a520a:/soft# touch hello.txt
+root@0ebddd7a520a:/soft# echo Thanks > hello.txt
+root@0ebddd7a520a:/soft# exit
+exit
+[root@localhost home]# 
+
+[root@localhost home]# ls
+java.tar.gz  newproject  project  xiaowang
+[root@localhost home]# cd project
+[root@localhost project]# ls
+hello.txt
+[root@localhost project]# cat hello.txt
+Thanks
+[root@localhost project]# 
+'''
+
+
+停止容器
+
+docker pause myjava
+
+docker unpause myjava
+
+docker stop myjava
+
+docker start -i myjava
+
+'''
+ARNING! The remote SSH server rejected X11 forwarding request.
+Last login: Mon Sep 14 17:56:13 2020 from 192.168.3.37
+[root@localhost ~]# docker pause myjava
+myjava
+[root@localhost ~]# docker unpause myjava
+myjava
+[root@localhost ~]# docker stop myjava
+myjava
+[root@localhost ~]# docker rm myjava
+myjava
+[root@localhost ~]# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+[root@localhost ~]# 
+'''
+
 
 
 
