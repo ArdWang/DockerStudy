@@ -164,7 +164,7 @@ ls
 docker run -it -p 9000:8080 -p 9001:8085 -v /home/project:/soft --privileged --name myjava  docker.io/java bash
 
  进入之后
-'''
+'''java
 root@0ebddd7a520a:/# 
 
 bash: cd: /soft#: No such file or directory
@@ -184,6 +184,7 @@ hello.txt
 [root@localhost project]# cat hello.txt
 Thanks
 [root@localhost project]# 
+
 '''
 
 
