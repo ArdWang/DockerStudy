@@ -214,6 +214,88 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 [root@localhost ~]# 
 ```
 
+mysql 集群方案
+
+reolication 快
+
+pxc 慢 性能高
+
+建议PXC 使用 PerconaServer mysql改进版 性能提升很大
+
+安装PXC镜像
+第一种方式
+
+```java
+
+docker pull percona/percona-xtradb-cluster
+
+```
+第二种方式
+
+```java
+docker load < /home/soft/pxc.tar.gz
+
+docker.io/percona/percona-xtradb-cluster
+
+```
+
+修改名字
+
+```java
+
+docker tag docker.io/percona/percona-xtradb-cluster pxc
+
+docker rmi docker.io/percona/percona-xtradb-cluster
+```
+
+创建内部网络
+
+```java
+docker network create net1
+
+docker network inspect net1
+
+docker network rm net1
+
+docker network create --subnet=172.18.0.0/24 net1
+
+docker inspect net1
+
+```
+
+创建 Docker 卷
+容器中得PXC节点映射数据目录得解决办法
+
+```java
+docker volume create --name v1
+
+"/var/lib/docker/volumes/v1/_data",
+
+docker rm v1
+
+```
+
+创建PXC容器 创建一个可以同步得去执行数据
+
+```java
+docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -v v1:/var/lib/mysql --privileged --name=node1 --net=net1 --ip 172.18.0.2 pxc
+
+docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 -v v2:/var/lib/mysql --privileged --name=node2 --net=net1 --ip 172.18.0.3 pxc 
+
+docker run -d -p 3308:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 -v v3:/var/lib/mysql --privileged --name=node3 --net=net1 --ip 172.18.0.4 pxc
+
+docker run -d -p 3309:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 -v v4:/var/lib/mysql --privileged --name=node4 --net=net1 --ip 172.18.0.5 pxc
+
+docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSTER_JOIN=node1 -v v5:/var/lib/mysql --privileged --name=node5 --net=net1 --ip 172.18.0.6 pxc
+
+```
+
+
+
+
+
+
+
 
 
 
