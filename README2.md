@@ -40,11 +40,23 @@ Docker 为什么这么火？ 十分轻巧
 
 虚拟机 属于 虚拟化技术 Docker 是一种容器技术！
 
-```java
+```
 vm. linux centos 隔离 需要开启多个虚拟机
 docker 隔离 镜像 最核心的环境 4m jdk mysql 很小巧 运行镜像就可以了 小巧 容器 几10M 容器秒级启动
 
 ```
+
+到现在 所有开发人员都必须要学会的Docker
+
+聊聊Docker
+Docker是基于 Go语言的开发的 开源项目
+
+官网地址 https://www.docker.com/
+
+文档地址 https://docs.docker.com/ Docker文档是超级详细的!
+
+仓库地址: https://hub.docker.com/  docker push
+
 
 
 
