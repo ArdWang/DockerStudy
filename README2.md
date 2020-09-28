@@ -132,6 +132,270 @@ DockerHub
 
 安装Docker ->Typora
 
+```
+环境安装
+```
 
+1. 需要会一点点的linux的基础
+2. CentOs7
+3. 我们使用xshell连接 centos
+
+```
+# 系统内核时3.10.0以上的
+[root@localhost /]# uname -r
+3.10.0-1127.19.1.el7.x86_64
+[root@localhost /]# 
+
+```
+
+系统的版本
+
+```
+[root@localhost /]# cat /etc/os-release
+NAME="CentOS Linux"
+VERSION="7 (Core)"
+ID="centos"
+ID_LIKE="rhel fedora"
+VERSION_ID="7"
+PRETTY_NAME="CentOS Linux 7 (Core)"
+ANSI_COLOR="0;31"
+CPE_NAME="cpe:/o:centos:centos:7"
+HOME_URL="https://www.centos.org/"
+BUG_REPORT_URL="https://bugs.centos.org/"
+
+CENTOS_MANTISBT_PROJECT="CentOS-7"
+CENTOS_MANTISBT_PROJECT_VERSION="7"
+REDHAT_SUPPORT_PRODUCT="centos"
+REDHAT_SUPPORT_PRODUCT_VERSION="7"
+
+[root@localhost /]# 
+
+```
+
+安装
+
+帮助文档
+
+卸载旧的版本
+
+```
+$ sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+```
+
+安装 需要的安装包
+
+```
+$ sudo yum install -y yum-utils
+```
+
+设置镜像的仓库
+
+```
+yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo #默认是国外是十分慢
+    
+#换成阿里云的镜像
+    
+yum-config-manager \
+    --add-repo \
+    http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+```
+
+更新yum索引
+
+```
+yum makecache fast
+```
+
+
+
+安装最新版的 Docker 引擎 docker -ce 社区版  ee企业版
+
+```
+yum install docker-ce docker-ce-cli containerd.io
+```
+
+启动docker
+
+```
+systemctl start docker
+```
+
+判断是否安装成功
+
+```
+[root@localhost /]# dokcer version
+-bash: dokcer: 未找到命令
+[root@localhost /]# docker version
+Client: Docker Engine - Community
+ Version:           19.03.13
+ API version:       1.40
+ Go version:        go1.13.15
+ Git commit:        4484c46d9d
+ Built:             Wed Sep 16 17:03:45 2020
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          19.03.13
+  API version:      1.40 (minimum version 1.12)
+  Go version:       go1.13.15
+  Git commit:       4484c46d9d
+  Built:            Wed Sep 16 17:02:21 2020
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.3.7
+  GitCommit:        8fba4e9a7d01810a393d5d25a3621dc101981175
+ runc:
+  Version:          1.0.0-rc10
+  GitCommit:        dc9208a3303feef5b3839f4323d9beb36df0a9dd
+ docker-init:
+  Version:          0.18.0
+  GitCommit:        fec3683
+[root@localhost /]# 
+
+```
+
+测试HelloWorld
+
+```
+docker run hello-world
+
+[root@localhost /]# docker run hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+0e03bdcc26d7: Pull complete 
+Digest: sha256:4cf9c47f86df71d48364001ede3a4fcd85ae80ce02ebad74156906caff5378bc
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+[root@localhost /]# 
+
+
+```
+
+查看下载Hellowrold镜像
+
+```
+docker images
+```
+
+卸载Docker
+
+```
+# 卸载依赖
+$ sudo yum remove docker-ce docker-ce-cli containerd.io
+
+# 删除目录
+$ sudo rm -rf /var/lib/docker
+
+# /var/lib/docker docker 默认工作目录
+```
+
+
+
+#### 阿里云镜像加速
+
+1.登录案例云找到云镜像加速服务
+
+2.加速地址
+
+3.配置使用 我这里使用的是别人企业的
+
+```
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://qiyb9988.mirror.aliyuncs.com"]
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+![image-20200928190307445](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200928190307445.png)
+
+
+
+```
+# 修改成这个样子
+vi /etc/docker/daemon.json
+{
+  "registry-mirrors": [
+    "https://registry.docker-cn.com",
+    "https://dockerhub.azk8s.cn",
+    "https://reg-mirror.qiniu.com"
+   ]
+}
+
+```
+
+
+
+https://processon.com 画图软件
+
+#### 回顾helloworld流程
+
+![image-20200928192037784](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200928192037784.png)
+
+
+
+#### 底层原理
+
+Docker怎么工作的
+
+Docker 是 client 和 server结构的系统、Docker的守护进程运行在主机上，通过sokcer从客户端访问
+
+Dockerserver接受到Docker-client的指令 就会执行这个命令
+
+![image-20200928192550931](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200928192550931.png)
 
   
+
+Docker为什么比VM快?
+
+1.Docker有比虚拟机更少的抽象层
+
+2.Docker利用了是宿主机的内核，vm需要时GuestOS
+
+![image-20200928192657778](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200928192657778.png)
+
+所以说，新建一个容器的时候，dokcer不需要虚拟机一样重新加载一个操作系统，减少引导，虚拟机是加载CuestOS,分钟级别的，而docker是利用宿主机的操作系统这是一个非常快的
+
+![image-20200928193010625](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200928193010625.png)
+
+学习完毕所有的命令 回过头来这段理论，就会很清晰
+
+
+
+#### Docker的常用的命令
