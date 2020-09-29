@@ -399,3 +399,317 @@ Docker为什么比VM快?
 
 
 #### Docker的常用的命令
+
+#### 帮助命令
+
+```
+docker version # 显示docker版本信息
+docker info    # 显示docker系统信息，包扣
+docker 命令 --help # 帮助命令
+
+```
+
+帮助文档地址 https://docs.docker.com/reference/
+
+
+
+#### 镜像命令
+
+##### docker images
+
+docker images --help
+
+```
+[root@localhost ~]# docker images --help
+
+Usage:	docker images [OPTIONS] [REPOSITORY[:TAG]]
+
+List images
+
+Options:
+  -a, --all             Show all images (default hides intermediate images)
+      --digests         Show digests
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print images using a Go template
+      --no-trunc        Don't truncate output
+  -q, --quiet           Only show numeric IDs
+[root@localhost ~]# 
+
+[root@localhost ~]# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+haproxy             latest              8e202ffaa1a8        2 weeks ago         93.3MB
+pxc                 latest              7eab3380a35c        3 months ago        603MB
+hello-world         latest              bf756fb1ae65        9 months ago        13.3kB
+[root@localhost ~]# 
+
+# 解析
+
+RPOSITORY 镜像的仓库源
+TAG       镜像的标签
+IMAGE ID  镜像ID
+CREATE    镜像的创建时间
+SIZE      镜像的大小
+
+# 可选项
+  -a, --all             Show all images (default hides intermediate images) #练出所有的镜像
+      --digests         Show digests
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print images using a Go template
+      --no-trunc        Don't truncate output
+  -q, --quiet           Only show numeric IDs  # 只显示镜像ID
+  
+  # 常用命令
+  docker images -a
+  docker images -q
+  
+```
+
+##### docker search 搜索镜像
+
+```
+docker search mysql
+
+[root@localhost ~]# docker search mysql
+NAME                              DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+mysql                             MySQL is a widely used, open-source relation…   9998                [OK]                
+mariadb                           MariaDB is a community-developed fork of MyS…   3662                [OK]                
+mysql/mysql-server                Optimized MySQL Server Docker images. Create…   731                                     [OK]
+percona                           Percona Server is a fork of the MySQL relati…   512                 [OK]                
+centos/mysql-57-centos7           MySQL 5.7 SQL database server                   83                                      
+mysql/mysql-cluster               Experimental MySQL Cluster Docker images. Cr…   76                                      
+centurylink/mysql                 Image containing mysql. Optimized to be link…   61                                      [OK]
+bitnami/mysql                     Bitnami MySQL Docker Image                      45                                      [OK]
+deitch/mysql-backup               REPLACED! Please use http://hub.docker.com/r…   41                                      [OK]
+tutum/mysql                       Base docker image to run a MySQL database se…   35                                      
+prom/mysqld-exporter                                                              31                                      [OK]
+schickling/mysql-backup-s3        Backup MySQL to S3 (supports periodic backup…   30                                      [OK]
+databack/mysql-backup             Back up mysql databases to... anywhere!         30                                      
+linuxserver/mysql                 A Mysql container, brought to you by LinuxSe…   26                                      
+centos/mysql-56-centos7           MySQL 5.6 SQL database server                   20                                      
+circleci/mysql                    MySQL is a widely used, open-source relation…   19                                      
+mysql/mysql-router                MySQL Router provides transparent routing be…   16                                      
+arey/mysql-client                 Run a MySQL client from a docker container      15                                      [OK]
+fradelg/mysql-cron-backup         MySQL/MariaDB database backup using cron tas…   8                                       [OK]
+openshift/mysql-55-centos7        DEPRECATED: A Centos7 based MySQL v5.5 image…   6                                       
+devilbox/mysql                    Retagged MySQL, MariaDB and PerconaDB offici…   3                                       
+ansibleplaybookbundle/mysql-apb   An APB which deploys RHSCL MySQL                2                                       [OK]
+widdpim/mysql-client              Dockerized MySQL Client (5.7) including Curl…   1                                       [OK]
+jelastic/mysql                    An image of the MySQL database server mainta…   1                                       
+monasca/mysql-init                A minimal decoupled init container for mysql    0                                       
+[root@localhost ~]# 
+
+# 可选项 通过收藏来过滤
+-- filter-STARS=3000 #搜索出来的镜像 STARTS大于3000的
+[root@localhost ~]# docker search mysql --filter=STARS=3000
+NAME                DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+mysql               MySQL is a widely used, open-source relation…   9998                [OK]                
+mariadb             MariaDB is a community-developed fork of MyS…   3662                [OK]                
+[root@localhost ~]# 
+
+```
+
+##### docker pull
+
+下载镜像
+
+docker pull mysql
+
+```
+[root@localhost ~]# docker pull --help
+
+Usage:	docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+
+Pull an image or a repository from a registry
+
+Options:
+  -a, --all-tags                Download all tagged images in the repository
+      --disable-content-trust   Skip image verification (default true)
+      --platform string         Set platform if server is multi-platform capable
+  -q, --quiet                   Suppress verbose output
+
+
+#如果不写版本 默认拉取得是 latest
+[root@localhost ~]# docker pull mysql
+Using default tag: latest
+latest: Pulling from library/mysql
+d121f8d1c412: Already exists 
+f3cebc0b4691: Pull complete # 分层下载 docker images核心 联合文件系统
+1862755a0b37: Pull complete 
+489b44f3dbb4: Pull complete 
+690874f836db: Pull complete 
+baa8be383ffb: Pull complete 
+55356608b4ac: Pull complete 
+dd35ceccb6eb: Pull complete 
+429b35712b19: Pull complete 
+162d8291095c: Pull complete 
+5e500ef7181b: Pull complete 
+af7528e958b6: Pull complete 
+Digest: sha256:e1bfe11693ed2052cb3b4e5fa356c65381129e87e38551c6cd6ec532ebe0e808 # 签名信息
+Status: Downloaded newer image for mysql:latest
+docker.io/library/mysql:latest  #真实地址
+[root@localhost ~]# 
+
+# 这个两个命令是相等得
+docker pull mysql
+docker pull docker.io/library/mysql:latest
+
+# 指定版本下载
+[root@localhost ~]# docker pull mysql:5.7
+5.7: Pulling from library/mysql
+d121f8d1c412: Already exists  #存在联合文件系统 有了就不需要去下载
+f3cebc0b4691: Already exists 
+1862755a0b37: Already exists 
+489b44f3dbb4: Already exists 
+690874f836db: Already exists 
+baa8be383ffb: Already exists 
+55356608b4ac: Already exists 
+277d8f888368: Pull complete 
+21f2da6feb67: Pull complete 
+2c98f818bcb9: Pull complete 
+031b0a770162: Pull complete 
+Digest: sha256:14fd47ec8724954b63d1a236d2299b8da25c9bbb8eacc739bb88038d82da4919
+Status: Downloaded newer image for mysql:5.7
+docker.io/library/mysql:5.7
+[root@localhost ~]# 
+
+[root@localhost ~]# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+mysql               5.7                 ef08065b0a30        2 weeks ago         448MB
+mysql               latest              e1d7dc9731da        2 weeks ago         544MB
+haproxy             latest              8e202ffaa1a8        2 weeks ago         93.3MB
+pxc                 latest              7eab3380a35c        3 months ago        603MB
+hello-world         latest              bf756fb1ae65        9 months ago        13.3kB
+[root@localhost ~]# 
+
+```
+
+##### docker rmi 删除镜像
+
+```
+[root@localhost ~]# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+mysql               5.7                 ef08065b0a30        2 weeks ago         448MB
+mysql               latest              e1d7dc9731da        2 weeks ago         544MB
+haproxy             latest              8e202ffaa1a8        2 weeks ago         93.3MB
+pxc                 latest              7eab3380a35c        3 months ago        603MB
+hello-world         latest              bf756fb1ae65        9 months ago        13.3kB
+
+# 通过id删除 通过指定得容易
+[root@localhost ~]# docker rmi ef08065b0a30
+Untagged: mysql:5.7
+Untagged: mysql@sha256:14fd47ec8724954b63d1a236d2299b8da25c9bbb8eacc739bb88038d82da4919
+Deleted: sha256:ef08065b0a302111b56966aa92c89fa0bacdfc537741cbca88a15b10f14332ca
+Deleted: sha256:c8c81ac92392c394197759ca3d50f5f843d85ac1550d8c0bb2b21adc7334100d
+Deleted: sha256:2dc86a1b9b92e7c946c684bd349e448d7c4fbb3236686e1a48ddfe5adb86a425
+Deleted: sha256:97b541df82456d38e987b630870fcd4e39f05f016717652466b3466841f4162e
+Deleted: sha256:aded9a11fc54761c770a9075cfc2d0bb72c72b59171a56cfa4322ab2b2d416e7
+[root@localhost ~]# 
+
+# 递归删除
+[root@localhost ~]# docker rmi -f $(docker images -aq)
+
+先删除容器，再删除镜像
+
+删除所有已停止的镜像 docker rm $(docker ps -a -q)
+删除所有镜像 docker rmi $(docker images -q)
+强制删除
+
+强制删除所有镜像 docker rmi -f $(docker images -q)
+
+```
+
+
+
+#### 容器命令
+
+说明：我们有了镜像才可以创建容器 linux 下载一个centos镜像来测试学习
+
+```
+docker pull centos
+```
+
+##### 新建容器并启动
+
+```
+docker run --help
+docker run [可选参数] image
+
+# 参数说明
+--name="Name" 容器名字 tomcat01 tomcat02 用来区分容器
+-d 后台方式运行 ja nohup
+-it 交互方式运行 进入容易查看内容 
+-p 指定容器得端口 -p 8080:8080 
+				-p主机端口 容器端口 （常用）
+-P 随机指定端口
+
+# 测试 启动并进入容器
+[root@localhost ~]# docker run -it centos /bin/bash
+[root@7a7dfcac3efe /]# 
+
+[root@7a7dfcac3efe /]# ls # 查看容器内得 Centos 基础版本 很多命令不完善得
+bin  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+
+退出 exit
+从容器中退出主机
+[root@7a7dfcac3efe /]# exit
+exit
+[root@localhost ~]# ls
+
+```
+
+##### 列出所有得运行容器
+
+```
+# docker ps 命令
+-a #列出正在运行得容器+带有运行得历史运行过容器
+n=? # 显示最近创建得容器
+-q # 只显示容器得编号
+
+
+[root@localhost /]# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+[root@localhost /]# 
+
+# 查看曾经运行过得容器
+[root@localhost /]# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                          PORTS               NAMES
+7a7dfcac3efe        centos              "/bin/bash"         3 minutes ago       Exited (0) About a minute ago                       naughty_solomon
+[root@localhost /]# 
+
+```
+
+##### 退出容器
+
+```
+exit #直接停止并退出
+ctrl+p+q 不停止退出
+
+[root@localhost /]# docker run -it centos /bin/bash
+[root@6f0336c943bb /]# [root@localhost /]# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+6f0336c943bb        centos              "/bin/bash"         17 seconds ago      Up 16 seconds                           mystifying_saha
+[root@localhost /]# 
+
+```
+
+
+
+##### 删除容器
+
+```
+docker rm 容器id  #删除指定得容器 不能删除正在运行得容器 如果要强制 删除 rm -f
+docker rm -f $(docker ps -aq) # 删除所有得容器
+
+docker ps -a -q|xargs  qocker rm # 也可以删除所有得容器
+```
+
+##### 启动和停止容器得操作
+
+```
+docker start 容器id
+docker restart 容器id
+docker stop 容器id 
+docker kill 容器id #强制删掉
+```
+
+##### 常用其它得命令
