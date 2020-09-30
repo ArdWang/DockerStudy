@@ -713,3 +713,326 @@ docker kill 容器id #强制删掉
 ```
 
 ##### 常用其它得命令
+
+后台启动容器
+
+```
+# 命令 docker run -d 镜像名
+[root@localhost ~]# docker run -d centos
+# 问题 docker ps, 发现centos停止了
+
+# 常见的坑 docker 容器使用后台运行，就必须要有一个前台的进程，docker发现没有应用，就会自己动停止
+# nginx 容器启动后，发现自己没有提供服务，就会立刻停止，就是没有程序了
+
+```
+
+##### 查看日志命令
+
+```
+docker logs --help
+
+docker logs -tf --tail 容器 没有日志
+
+退出日志 ctrl+c
+
+"while true;do echo kuangshen; sleep 1;done"
+
+
+[root@localhost ~]# docker run -d centos /bin/sh -c "while true; do echo kuangshen;sleep 1;done"
+
+[root@localhost ~]# docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+615ecbb685f6        centos              "/bin/sh -c 'while t…"   4 seconds ago       Up 3 seconds                            wizardly_easley
+
+[root@localhost ~]# docker logs --help
+
+Usage:	docker logs [OPTIONS] CONTAINER
+
+Fetch the logs of a container
+
+Options:
+      --details        Show extra details provided to logs
+  -f, --follow         Follow log output
+      --since string   Show logs since timestamp (e.g. 2013-01-02T13:23:37) or relative (e.g. 42m for 42 minutes)
+      --tail string    Number of lines to show from the end of the logs (default "all")
+  -t, --timestamps     Show timestamps
+      --until string   Show logs before a timestamp (e.g. 2013-01-02T13:23:37) or relative (e.g. 42m for 42 minutes)
+
+# 显示10条日志
+[root@localhost ~]# docker logs -tf --tail 10 615ecbb685f6
+
+# 显示全部的日志
+[root@localhost ~]# docker logs -tf 615ecbb685f6
+
+
+
+```
+
+##### 查看容器中进程信息
+
+```
+top 命令 
+容器id
+docker top 615ecbb685f6
+
+[root@localhost ~]# docker top --help
+
+Usage:	docker top CONTAINER [ps OPTIONS]
+
+Display the running processes of a container
+[root@localhost ~]# docker top 615ecbb685f6
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                4188                4171                0                   18:19               ?                   00:00:00            /bin/sh -c while true; do echo kuangshen;sleep 1;done
+root                4587                4188                0                   18:24               ?                   00:00:00            /usr/bin/coreutils --coreutils-prog-shebang=sleep /usr/bin/sleep 1
+[root@localhost ~]# 
+
+```
+
+
+
+##### 查看镜像的元素据
+
+```
+# 命令 docker inspect
+
+[root@localhost ~]# docker inspect --help
+
+Usage:	docker inspect [OPTIONS] NAME|ID [NAME|ID...]
+
+Return low-level information on Docker objects
+
+Options:
+  -f, --format string   Format the output using the given Go template
+  -s, --size            Display total file sizes if the type is container
+      --type string     Return JSON for specified type
+[root@localhost ~]# 
+
+# 命令 
+
+
+[root@localhost ~]# docker inspect 615ecbb685f6
+[
+    {
+        "Id": "615ecbb685f653582cec7e734c71218774b2b75d095128db4f42105b89953181",
+        "Created": "2020-09-30T10:19:38.741631719Z",
+        "Path": "/bin/sh",
+        "Args": [
+            "-c",
+            "while true; do echo kuangshen;sleep 1;done"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 4188,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2020-09-30T10:19:38.977843915Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:0d120b6ccaa8c5e149176798b3501d4dd1885f961922497cd0abef155c869566",
+        "ResolvConfPath": "/var/lib/docker/containers/615ecbb685f653582cec7e734c71218774b2b75d095128db4f42105b89953181/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/615ecbb685f653582cec7e734c71218774b2b75d095128db4f42105b89953181/hostname",
+        "HostsPath": "/var/lib/docker/containers/615ecbb685f653582cec7e734c71218774b2b75d095128db4f42105b89953181/hosts",
+        "LogPath": "/var/lib/docker/containers/615ecbb685f653582cec7e734c71218774b2b75d095128db4f42105b89953181/615ecbb685f653582cec7e734c71218774b2b75d095128db4f42105b89953181-json.log",
+        "Name": "/wizardly_easley",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "default",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "CapAdd": null,
+            "CapDrop": null,
+            "Capabilities": null,
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "KernelMemory": 0,
+            "KernelMemoryTCP": 0,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": false,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/f9fb89040de94c4dc537ea80f5fa38ae0a0f8fd5732893d3e87c23020ab8b9f7-init/diff:/var/lib/docker/overlay2/2618e3fe75e57cc2633cdbc57add7b3bb5ba74efae7dd0fde62e97690d2ed39d/diff",
+                "MergedDir": "/var/lib/docker/overlay2/f9fb89040de94c4dc537ea80f5fa38ae0a0f8fd5732893d3e87c23020ab8b9f7/merged",
+                "UpperDir": "/var/lib/docker/overlay2/f9fb89040de94c4dc537ea80f5fa38ae0a0f8fd5732893d3e87c23020ab8b9f7/diff",
+                "WorkDir": "/var/lib/docker/overlay2/f9fb89040de94c4dc537ea80f5fa38ae0a0f8fd5732893d3e87c23020ab8b9f7/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "615ecbb685f6",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "while true; do echo kuangshen;sleep 1;done"
+            ],
+            "Image": "centos",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {
+                "org.label-schema.build-date": "20200809",
+                "org.label-schema.license": "GPLv2",
+                "org.label-schema.name": "CentOS Base Image",
+                "org.label-schema.schema-version": "1.0",
+                "org.label-schema.vendor": "CentOS"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "56db8db008c0225fa35508ff3f72eb362bc8c51cc9f3f9d5f0571510b07dc83b",
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "Ports": {},
+            "SandboxKey": "/var/run/docker/netns/56db8db008c0",
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "3b18c9d8d07dbfe7099eca126c0a17cc023c9547ef6a7fc6b8dd78007c28013e",
+            "Gateway": "172.17.0.1",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "172.17.0.2",
+            "IPPrefixLen": 16,
+            "IPv6Gateway": "",
+            "MacAddress": "02:42:ac:11:00:02",
+            "Networks": {
+                "bridge": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "NetworkID": "3c904616988c63c272b88f779efa6f30aa06214e4fc5ed94d48b1aefa5ec1b3e",
+                    "EndpointID": "3b18c9d8d07dbfe7099eca126c0a17cc023c9547ef6a7fc6b8dd78007c28013e",
+                    "Gateway": "172.17.0.1",
+                    "IPAddress": "172.17.0.2",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "MacAddress": "02:42:ac:11:00:02",
+                    "DriverOpts": null
+                }
+            }
+        }
+    }
+]
+[root@localhost ~]# 
+
+```
+
+##### 进入当前正在运行的容器
+
+
+
+
+
+
+
+解决一些网络问题：https://www.cnblogs.com/python-wen/p/11224828.html
+
+*WARNING: IPv4 forwarding is disabled. Networking will not work.*
+
+
+
