@@ -1024,7 +1024,65 @@ Options:
 
 ##### 进入当前正在运行的容器
 
+```
+通常容器使用后台运行 需要进入容器 修改一些配置
+# docker
+docker exec -it 容器id bashshell
 
+[root@localhost ~]# docker exec -it 615ecbb685f6 /bin/bash
+[root@615ecbb685f6 /]# ls
+bin  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@615ecbb685f6 /]#
+
+# 测试
+[root@615ecbb685f6 /]# ps -ef
+UID         PID   PPID  C STIME TTY          TIME CMD
+root          1      0  0 03:40 ?        00:00:11 /bin/sh -c while true; do echo kuangshen;sleep 1;done
+root      24394      0  0 10:28 pts/0    00:00:00 /bin/bash
+root      24437      1  0 10:29 ?        00:00:00 /usr/bin/coreutils --coreutils-prog-shebang=sleep /usr/bin/sleep 1
+root      24438  24394  0 10:29 pts/0    00:00:00 ps -ef
+[root@615ecbb685f6 /]# 
+
+# 方式2
+docker attach 容器id
+测试
+# docker exec 进入容器后开启一个新的终端,可以在里面操作(常用)
+# docker attach 进入容器正在执行的终端 不会启动新的进程
+
+```
+
+##### 从容器内拷贝文件到主机上
+
+```
+docker cp 容器id内路径 目的的主机路径
+
+# 进入docker容器内部
+[root@localhost home]# docker attach b36fbea55c53
+# 在容器内部新建一个文件
+[root@b36fbea55c53 /]# cd /home
+[root@b36fbea55c53 home]# ls
+[root@b36fbea55c53 home]# touch test.java
+[root@b36fbea55c53 home]# ls
+test.java
+[root@b36fbea55c53 home]# exit  
+exit
+[root@localhost home]# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+[root@localhost home]# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+b36fbea55c53        centos              "/bin/bash"         2 minutes ago       Exited (0) 9 seconds ago                       sad_curran
+
+# 将这个文件拷贝出来到主机上
+[root@localhost home]# docker cp b36fbea55c53:/home/test.java /home
+[root@localhost home]# ls
+java.tar.gz  kuangshen.java  newproject  project  soft  test.java  xiaowang
+[root@localhost home]# 
+
+docker data
+# 拷贝是一个手动过程 为了使用-v 数据卷的技术 可以实现自动同步
+```
+
+学习方式: 将所有命令敲一遍 自己记录笔记
 
 
 
