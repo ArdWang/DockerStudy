@@ -1084,6 +1084,32 @@ docker data
 
 学习方式: 将所有命令敲一遍 自己记录笔记
 
+##### 小结
+
+![image-20201003191738994](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201003191738994.png)
+
+![image-20201003191953690](C:\Users\Administrator\Desktop\image-20201003191953690.png)
+
+![image-20201003192101954](C:\Users\Administrator\Desktop\image-20201003192101954.png)
+
+![image-20201003192117673](C:\Users\Administrator\Desktop\image-20201003192117673.png)
+
+```
+attach # 当前shell下的 attach连接到指定运行镜像
+build  # 通过dockerfile定制镜像
+commit # 提交当前容器为新的镜像
+cp  # 从容器中拷贝指定文件或者目录到宿主机中
+
+```
+
+docker的命令是非常的多的。上面我们学习的哪些都是些常用的命令
+
+```
+接下来我们一起练习
+```
+
+##### 作业练习
+
 
 
 
