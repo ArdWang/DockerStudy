@@ -1144,6 +1144,141 @@ docker的命令是非常的多的。上面我们学习的哪些都是些常用�
 
 ##### 作业练习
 
+```
+第一个作业
+Docker 安装 Nginx
+
+docker search nginx
+
+docker pull nginx
+
+```
+
+```
+1.搜索镜像  search 可以帮助文档信息
+2.下载镜像
+3.运行测试
+
+[root@localhost ~]# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+nginx               latest              7e4d58f0e5f3        3 weeks ago         133MB
+haproxy             latest              8e202ffaa1a8        3 weeks ago         93.3MB
+centos              latest              0d120b6ccaa8        7 weeks ago         215MB
+# 运行nginx 进行测试 -d 后台运行 --name 起一个名字 
+# -p 宿主机端口 容器内部端口
+[root@localhost ~]# docker run -d --name nginx01 -p 3344:80 nginx 
+81fd854adc4553d826d70c91e25b11944f89346411e8df0030eb72f98b648238
+[root@localhost ~]# docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+81fd854adc45        nginx               "/docker-entrypoint.…"   10 seconds ago      Up 7 seconds        0.0.0.0:3344->80/tcp   nginx01
+# 测试
+[root@localhost ~]# curl localhost:3344
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+[root@localhost ~]# 
+
+# 进入容器
+[root@localhost ~]# docker exec -it nginx01 /bin/bash
+root@81fd854adc45:/# whereis nginx
+nginx: /usr/sbin/nginx /usr/lib/nginx /etc/nginx /usr/share/nginx
+root@81fd854adc45:/# cd /etc/nginx
+root@81fd854adc45:/etc/nginx# ls
+conf.d	fastcgi_params	koi-utf  koi-win  mime.types  modules  nginx.conf  scgi_params	uwsgi_params  win-utf
+root@81fd854adc45:/etc/nginx# 
+
+# 停止容器
+[root@localhost ~]# docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+81fd854adc45        nginx               "/docker-entrypoint.…"   8 minutes ago       Up 8 minutes        0.0.0.0:3344->80/tcp   nginx01
+[root@localhost ~]# docker stop
+"docker stop" requires at least 1 argument.
+See 'docker stop --help'.
+
+Usage:  docker stop [OPTIONS] CONTAINER [CONTAINER...]
+
+Stop one or more running containers
+[root@localhost ~]# docker stop 81fd854adc45
+81fd854adc45
+[root@localhost ~]#
+
+```
+
+
+
+##### 端口暴露的慨念
+
+![image-20201004132616072](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201004132616072.png)
+
+
+
+思考问题:我们每次改动 nginx配置文件，都需要进入容器内部?十分麻烦，我要是可以在容器外部提供一个映射路径，达到在容器修改文件名，容器就可以自动修改? -v 数据卷的方式
+
+```
+作业:docker 安装 tomcat
+
+# 官方的使用 $ docker run -it --rm tomcat:9.0
+# 我们之前的启动都是后台，停止容器之后，容器还是可以查到 一般来测试 用完就自动删除
+
+# 先下载再启动
+docker pull tomcat
+
+# 启动运行
+[root@localhost ~]# docker run -d -p 3355:8080 --name tomcat01 tomcat
+
+# 进入容器
+root@989d275bf22c:/usr/local/tomcat# ls
+BUILDING.txt	 LICENSE  README.md	 RUNNING.txt  conf  logs	    temp     webapps.dist
+CONTRIBUTING.md  NOTICE   RELEASE-NOTES  bin	      lib   native-jni-lib  webapps  work
+root@989d275bf22c:/usr/local/tomcat# ls -al
+
+# 发现问题 liunx 命令少了 没有webapps 阿里云原因 还有镜像原因 默认是最少的镜像 把不必要的都删除掉了
+# 保证可以最少的
+
+# 处理方法如下
+root@989d275bf22c:/usr/local/tomcat/webapps.dist# cd ..
+root@989d275bf22c:/usr/local/tomcat# cp -r webapps.dist/* webapps
+
+```
+
+外网访问是可以的
+
+思考问题： 我们以后要部署项目，如果每次都要进入容器十分麻烦，我要是可以在容器外部提供一个映射路径，达到在容器修改文件名，容器就可以自动修改? -v 数据卷的方式
+
+我们在外部放入项目 就自动同步到内部就好了
+
+docker 容器 tomact -网站 docker mysql
+
+
+
+```
+作业3 部署 es kibana
+
+
+```
+
 
 
 
