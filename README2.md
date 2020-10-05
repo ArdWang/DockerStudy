@@ -1276,10 +1276,74 @@ docker 容器 tomact -网站 docker mysql
 ```
 作业3 部署 es kibana
 
+elasticsearch
+
+# es 暴露的端口很多
+# es 耗内存
+# es
+# 网络配置
+
+# 启动 elasticsearch
+$ docker run -d --name elasticsearch02 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:7.6.2
+
+# 启动了服务器 Linux 就很卡  docker status 查看 cpu状态
+# es启动特别耗内存 1 xg 1核2g
+# 停止整个docker
+# 查看 docker stats
+# 测试 es是否成功了
+# 赶紧关闭，增加内存的限制
+
+[root@localhost ~]# curl localhost:9200
+
+{
+  "name" : "73d9d8563afc",
+  "cluster_name" : "docker-cluster",
+  "cluster_uuid" : "9hYVluICTqKFDb0ZycJ7Cg",
+  "version" : {
+    "number" : "7.6.2",
+    "build_flavor" : "default",
+    "build_type" : "docker",
+    "build_hash" : "ef48eb35cf30adf4db14086e8aabd07ef6fb113f",
+    "build_date" : "2020-03-26T06:34:37.794943Z",
+    "build_snapshot" : false,
+    "lucene_version" : "8.4.0",
+    "minimum_wire_compatibility_version" : "6.8.0",
+    "minimum_index_compatibility_version" : "6.0.0-beta1"
+  },
+  "tagline" : "You Know, for Search"
+}
+
+# 可以通过修改配置文件来增加使用内存的限制 -e 环境配置修改
+# 通过以下就可以更改
+
+docker run -d --name elasticsearch02 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms64m -Xmx512m" elasticsearch:7.6.2
+
+[root@localhost ~]# curl localhost:9200
+{
+  "name" : "7127d67c8ab9",
+  "cluster_name" : "docker-cluster",
+  "cluster_uuid" : "GgyCknP9SviAQIRv2V2SjA",
+  "version" : {
+    "number" : "7.6.2",
+    "build_flavor" : "default",
+    "build_type" : "docker",
+    "build_hash" : "ef48eb35cf30adf4db14086e8aabd07ef6fb113f",
+    "build_date" : "2020-03-26T06:34:37.794943Z",
+    "build_snapshot" : false,
+    "lucene_version" : "8.4.0",
+    "minimum_wire_compatibility_version" : "6.8.0",
+    "minimum_index_compatibility_version" : "6.0.0-beta1"
+  },
+  "tagline" : "You Know, for Search"
+}
+[root@localhost ~]# 
+
 
 ```
 
+作业：使用 kibana 内部端口  es 如何才能连接过去
 
+![image-20201005194011198](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201005194011198.png)
 
 
 
