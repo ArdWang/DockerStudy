@@ -1353,3 +1353,92 @@ docker run -d --name elasticsearch02 -p 9200:9200 -p 9300:9300 -e "discovery.typ
 
 
 
+#### 可视化
+
+Portainer 可视化面板
+
+Docker 图形化管理工具 后台面板进行操作
+
+
+
+```java
+# portainer 安装
+    
+docker run -d -p 8088:9000 -v /var/run/docker.sock:/var/run/docker.sock --restart=always --privileged=true portainer/portainer
+    
+docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock --restart=always --name prtainer --privileged=true portainer/portainer
+```
+
+访问测试
+
+http://192.168.3.47:9000
+
+通过它来访问了:
+
+
+
+![image-20201006084854607](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201006084854607.png)
+
+
+
+选择本地的
+
+![image-20201006084912688](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201006084912688.png)
+
+
+
+然后是用一个这样子的面板
+
+![image-20201006085017889](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201006085017889.png)
+
+
+
+可视化面板
+
+![image-20201006085419591](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201006085419591.png)
+
+
+
+我们平时不会用 测试一下即可
+
+
+
+Rancher (CI/CD再用)
+
+
+
+#### Docker镜像的讲解
+
+##### 镜像是什么
+
+镜像是一种轻量级可执行的独立软件包, 用来打包软件运行环境和基于运行环境开发的软件，它包含运行软件所需要的所有内容，包扣代码，运行时，库。环境变量和配置文件。
+
+所有的应用直接打包部署 就可以直接跑起来
+
+1.从远程仓库下载
+
+2.从别人哪里拷贝
+
+3.自己做一个
+
+
+
+#### Docker镜像的加载原理
+
+```
+UnionFS(联合文件系统)   
+```
+
+一层一层的叠加
+
+共用文件
+
+
+
+docker镜像加载原理
+
+![image-20201006090057454](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201006090057454.png)
+
+虚拟机是分钟级别
+
+容器是秒级的
