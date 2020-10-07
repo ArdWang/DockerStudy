@@ -1442,3 +1442,33 @@ docker镜像加载原理
 虚拟机是分钟级别
 
 容器是秒级的
+
+
+
+##### 理解
+
+![image-20201007190506164](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201007190506164.png)
+
+![image-20201007190650064](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201007190650064.png)
+
+![image-20201007190748577](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201007190748577.png)
+
+![image-20201007191100184](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201007191100184.png)
+
+```java
+特点
+```
+
+Dokcer 镜像都是只读的，当容器启动时，一个新的可写层被加载到镜像的顶部!
+
+这一层就是我们通常说的容器层，容器之下的都叫镜像层
+
+pull 远程下载下来了
+
+![image-20201007191756770](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201007191756770.png)
+
+
+
+如何提交一个自己镜像
+
+#### Commit镜像
