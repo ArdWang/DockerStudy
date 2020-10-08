@@ -1472,3 +1472,79 @@ pull 远程下载下来了
 如何提交一个自己镜像
 
 #### Commit镜像
+
+```java
+docker commit 提交容器成为一个新的副本
+
+ #命令和git相似
+docker commit -m="提交的描述信息" -a-="作者" 容器id 目标镜像名:[TAG]
+```
+
+```
+# 启动一个默认的 tomcat
+
+# 发现这个默认的tomcat是没有webapps的一个应用的，镜像的原因，官方的镜像
+
+# 自己拷贝了一份基本的文件
+
+# 将操作过的容器 通过commit提交一个新的镜像 我们以后就使用我们修改过的镜像，这就是我们修改过的镜像
+
+[root@localhost ~]# docker ps
+CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS                                            NAMES
+e69f74b3f8ff        tomcat                "catalina.sh run"        9 minutes ago       Up 9 minutes        0.0.0.0:8080->8080/tcp                           quizzical_stonebraker
+956a33482450        portainer/portainer   "/portainer"             2 days ago          Up 2 days           0.0.0.0:9000->9000/tcp                           hopeful_mccarthy
+7127d67c8ab9        elasticsearch:7.6.2   "/usr/local/bin/dock…"   2 days ago          Up 2 days           0.0.0.0:9200->9200/tcp, 0.0.0.0:9300->9300/tcp   elasticsearch02
+[root@localhost ~]# docker commit -a="superbread" -m="add webapps app" e69f74b3f8ff tomcat02:1.0
+sha256:f644b9fa75d3c289b05b1b520c11bad075a38c08be820198fbd914bb04c754e2
+[root@localhost ~]# docker images
+REPOSITORY            TAG                 IMAGE ID            CREATED             SIZE
+tomcat02              1.0                 f644b9fa75d3        7 seconds ago       652MB
+tomcat                9.0                 f796d3d2c195        3 weeks ago         647MB
+tomcat                latest              f796d3d2c195        3 weeks ago         647MB
+redis                 latest              84c5f6e03bf0        3 weeks ago         104MB
+nginx                 latest              7e4d58f0e5f3        3 weeks ago         133MB
+haproxy               latest              8e202ffaa1a8        4 weeks ago         93.3MB
+centos                latest              0d120b6ccaa8        8 weeks ago         215MB
+portainer/portainer   latest              62771b0b9b09        2 months ago        79.1MB
+elasticsearch         7.6.2               f29a1ee41030        6 months ago        791MB
+[root@localhost ~]# 
+
+
+```
+
+
+
+学习方式 说明 先理解概念 但一定实践 理论实践操作
+
+```
+如果你想要保存容器的状态，就可以通过commit来提交 获得一个镜像
+就好比我们以前学习虚拟机的时候 快照
+```
+
+到了这里才算是入门 Docker 认真吸收练习，该休息
+
+
+
+#### 容器数据卷
+
+
+
+
+
+#### DockerFile
+
+
+
+#### Docker 网络
+
+
+
+企业实战
+
+
+
+Docker Compose
+
+
+
+CI/CD jenkins 流水线！
