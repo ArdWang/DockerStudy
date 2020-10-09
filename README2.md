@@ -1527,9 +1527,68 @@ elasticsearch         7.6.2               f29a1ee41030        6 months ago      
 
 #### 容器数据卷
 
+##### 什么是容器数据卷
+
+docker的理念回顾
+
+将应用和环境打包成一个镜像!
+
+数据?如果数据在容器中，那么我们容器删除，数据就会失去 需求 数据可以持久化
+
+Mysql 容器删了 删库跑路 需求 mysql数据可以存储在本地
+
+容器之间可以有一个共享的技术！
+
+Docker容器中产生的数据可以同步到本地 Docker容器产生的数据，同步到本地
+
+这就是卷技术 目录挂载 将我们的容器内的目录 挂在Linux上面!
 
 
 
+![image-20201009183613283](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201009183613283.png)
+
+
+
+总结一句话 容器的持久化的同步操作 容器可以数据共享的
+
+##### 使用数据卷
+
+```java
+方式一；直接使用 -v
+[root@localhost ~]# docker run -it -v
+docker run -it -v 主机目录地址 容器内部目录 -p 端口做映射
+
+[root@localhost ~]# cd /home
+[root@localhost home]# ls
+java.tar.gz  kuangshen.java  newproject  project  soft  test.java  xiaowang
+[root@localhost home]# docker run -it -v /home/ceshi:/home centos /bin/bash
+
+# 启动起来的时候我们可以通过 docker inspect 容器id
+```
+
+挂载
+
+![image-20201009184813285](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201009184813285.png)
+
+测试文件同步的效果
+
+![image-20201009185123821](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201009185123821.png)
+
+
+
+再来测试
+
+1.停止容器
+
+2.宿主机上修改文件
+
+3.启动容器
+
+4.容器内依旧可以同步
+
+![image-20201009185540614](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201009185540614.png)
+
+好处：我们以后修改 只需要在本地修改即可，容器内部会自动同步!
 
 #### DockerFile
 
