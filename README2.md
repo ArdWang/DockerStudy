@@ -1590,6 +1590,83 @@ java.tar.gz  kuangshen.java  newproject  project  soft  test.java  xiaowang
 
 好处：我们以后修改 只需要在本地修改即可，容器内部会自动同步!
 
+
+
+##### 实战: 安装Mysql
+
+思考: MYSQL的数据持久化的问题
+
+```java
+#获取镜像
+[root@localhost ~]# docker pull mysql:5.7
+
+# 启动容器 挂载数据 #安装启动mysql 需要配置密码、
+# 官方的命令 
+$ docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+
+# 启动程序
+-d 后台运行
+-p 端口映射
+-v 卷挂载
+-e 配置文件
+[root@localhost ~]# docker run -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d -v /home/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=5324840 --name mysql01 mysql:5.7
+    
+# 启动之后 我们使用启动sql连接成功
+# sqlyog- 连接到服务器的3310 ---- 3310 和容器内的3306映射这个时候我们就能连接上的
+
+[root@localhost mysql]# cd data/
+[root@localhost data]# ls
+auto.cnf    ca.pem           client-key.pem  ibdata1      ib_logfile1  mysql               private_key.pem  server-cert.pem  sys
+ca-key.pem  client-cert.pem  ib_buffer_pool  ib_logfile0  ibtmp1       performance_schema  public_key.pem   server-key.pem
+[root@localhost data]# ls
+auto.cnf    ca.pem           client-key.pem  ibdata1      ib_logfile1  mysql               private_key.pem  server-cert.pem  sys
+ca-key.pem  client-cert.pem  ib_buffer_pool  ib_logfile0  ibtmp1       performance_schema  public_key.pem   server-key.pem   test
+[root@localhost data]#
+ 
+# 在本地测试 创建一个数据库 查看一下映射的路径是否OK 
+
+```
+
+
+
+假设我们把数据删除 发现我们挂载的数据依据是在磁盘中的
+
+```java
+[root@localhost ~]# docker rm -f mysql01
+mysql01
+[root@localhost ~]# docker ps
+CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS                                            NAMES
+04fff395e864        centos                "/bin/bash"              22 hours ago        Up 22 hours                                                          upbeat_banach
+956a33482450        portainer/portainer   "/portainer"             4 days ago          Up 4 days           0.0.0.0:9000->9000/tcp                           hopeful_mccarthy
+7127d67c8ab9        elasticsearch:7.6.2   "/usr/local/bin/dock…"   4 days ago          Up 4 days           0.0.0.0:9200->9200/tcp, 0.0.0.0:9300->9300/tcp   elasticsearch02
+[root@localhost ~]# 
+
+
+#如下面可以看到
+    
+[root@localhost home]# cd mysql
+[root@localhost mysql]# ls
+conf  data
+[root@localhost mysql]# cd data/
+[root@localhost data]# ls
+auto.cnf    ca.pem           client-key.pem  ibdata1      ib_logfile1  mysql               private_key.pem  server-cert.pem  sys
+ca-key.pem  client-cert.pem  ib_buffer_pool  ib_logfile0  ibtmp1       performance_schema  public_key.pem   server-key.pem
+[root@localhost data]# ls
+auto.cnf    ca.pem           client-key.pem  ibdata1      ib_logfile1  mysql               private_key.pem  server-cert.pem  sys
+ca-key.pem  client-cert.pem  ib_buffer_pool  ib_logfile0  ibtmp1       performance_schema  public_key.pem   server-key.pem   test
+[root@localhost data]# ls
+auto.cnf    ca.pem           client-key.pem  ibdata1      ib_logfile1  mysql               private_key.pem  server-cert.pem  sys
+ca-key.pem  client-cert.pem  ib_buffer_pool  ib_logfile0  ibtmp1       performance_schema  public_key.pem   server-key.pem   test
+[root@localhost data]# 
+
+```
+
+
+
+
+
+
+
 #### DockerFile
 
 
