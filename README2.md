@@ -1661,7 +1661,103 @@ ca-key.pem  client-cert.pem  ib_buffer_pool  ib_logfile0  ibtmp1       performan
 
 ```
 
+##### 具名挂载 和匿名挂载
 
+```java
+# 匿名挂载
+-v 容器内路径
+
+docker run -d -P --name nginx01 -v /etc/nginx nginx
+# 查看所有volume 情况
+[root@localhost ~]# docker run -d -P --name nginx01 -v /etc/nginx nginx
+ec1acb203d59c4f0e20a432375e4d26d6ea9e1cb52526bb05b06a6345a505ff6
+[root@localhost ~]# docker volume ls
+DRIVER              VOLUME NAME
+local               08216b4e50fd50463bc6393ba2a07060d64851b2bb3a7b689cd625fb71f8686d
+local               9195ad4ae977575e8385dacca2d9dc2926507023bf353812d63bc73b15a1520a
+local               a3baa593adf8da7908fb624a71a0494a32dbb44f23a9984b417b845d1373bb7c
+local               b47dc248a1125a7b14c2e5bd5f571360fb0d9dc5923e05021eceb133dfeab612
+local               bfb0a01f46024b119a4d05078665973ad45d7c02cbd6bf0f93ef91a98f81bb66
+local               d8082a0ecc8633bb776f754084a85aac9dead3ce97af0c1defdf6a4f83351e76
+local               dfeb610d37f3606e9c1c1b961f20aa1b5a845056d7d3153201be56784c04f132
+local               v1
+local               v2
+local               v3
+local               v4
+local               v5
+[root@localhost ~]# 
+
+#这里发现 这种是匿名挂载 我们在-v只有容器的路径
+
+#具名挂载 通过-v 卷名:容器内的路径
+[root@localhost ~]# docker run -d -P --name nginx02 -v juming-nginx:/etc/nginx nginx
+16d637f424f1566cd0101d48005355db4f4605394315200997bbc57a0b4b20fb
+[root@localhost ~]# docker volume ls
+DRIVER              VOLUME NAME
+local               08216b4e50fd50463bc6393ba2a07060d64851b2bb3a7b689cd625fb71f8686d
+local               9195ad4ae977575e8385dacca2d9dc2926507023bf353812d63bc73b15a1520a
+local               a3baa593adf8da7908fb624a71a0494a32dbb44f23a9984b417b845d1373bb7c
+local               b47dc248a1125a7b14c2e5bd5f571360fb0d9dc5923e05021eceb133dfeab612
+local               bfb0a01f46024b119a4d05078665973ad45d7c02cbd6bf0f93ef91a98f81bb66
+local               d8082a0ecc8633bb776f754084a85aac9dead3ce97af0c1defdf6a4f83351e76
+local               dfeb610d37f3606e9c1c1b961f20aa1b5a845056d7d3153201be56784c04f132
+local               juming-nginx
+local               v1
+local               v2
+local               v3
+local               v4
+local               v5
+[root@localhost ~]# 
+
+#查看卷
+[root@localhost ~]# docker volume inspect juming-nginx
+[
+    {
+        "CreatedAt": "2020-10-11T11:24:28+08:00",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/juming-nginx/_data",
+        "Name": "juming-nginx",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+[root@localhost ~]# 
+
+    
+    
+```
+
+所有的docker容器内的卷，没有指定目录的情况下都是在 /var/lib/docker/xxx/_data
+
+我们通过具名挂载方便找到一个卷 我们大多数情况下使用的 具名挂载
+
+```
+如何确定具名挂载还是 指定路径挂载
+
+-v 容器内的路径 
+v 卷名  #具名挂载
+-v /宿主机路径: 指定路径的股灾
+```
+
+拓展:
+
+```java
+# 通过 -v 容器内路径 ro,rw 改写读写权限
+ro radonly  # 只读
+rw readwrite # 可读可写
+
+# 一旦这个设置容器权限，容器对我们有限定了
+[root@localhost ~]# docker run -d -P --name nginx02 -v juming-nginx:/etc/nginx:ro nginx
+[root@localhost ~]# docker run -d -P --name nginx02 -v juming-nginx:/etc/nginx:rw nginx
+  
+# ro 只要看到 ro 只能通过宿主机来操作 容器内部是无法操作的    
+    
+```
+
+
+
+##### 初识Dockerfile
 
 
 
