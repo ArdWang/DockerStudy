@@ -1759,6 +1759,90 @@ rw readwrite # 可读可写
 
 ##### 初识Dockerfile
 
+Docker file 就用来构建Docker镜像的构建文件 命令脚本 先体验
+
+```java
+# 通过脚本可以生成镜像，镜像是一层的一层，脚本就是一个个的命令
+# 创建一个dockerfile文件 名字可以随机 建议 Dockerfile
+# 文件中的内容 指令(大写) 参数
+
+#匿名挂载
+FORM centos
+
+VOLUME ["volume01","volume02"]
+
+CMD echo "----end----"
+CMD /bin/bash
+    
+Dockerfile 分层 就是镜像一个层
+    
+[root@localhost docker-test-volume]# docker build -f /home/docker-test-volume/dockerdile1 -t kuangshen/centos:1.0 .
+
+Step 1/4 : FROM centos
+ ---> 0d120b6ccaa8
+Step 2/4 : VOLUME ["volume01","volume02"]
+ ---> Running in 3521ad5e6ab2
+Removing intermediate container 3521ad5e6ab2
+ ---> 1747221468ed
+Step 3/4 : CMD echo "----end----"
+ ---> Running in e8e840faf225
+Removing intermediate container e8e840faf225
+ ---> 3f8580020701
+Step 4/4 : CMD /bin/bash
+ ---> Running in 0cc1fe41b81f
+Removing intermediate container 0cc1fe41b81f
+ ---> 9948fdb8f93f
+Successfully built 9948fdb8f93f
+Successfully tagged kuangshen/centos:1.0
+[root@localhost docker-test-volume]# 
+
+
+
+```
+
+![image-20201012182856703](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201012182856703.png)
+
+```
+启动自己写的容器
+[root@localhost docker-test-volume]# docker run -it 9948fdb8f93f /bin/bash
+[root@deaeab958904 /]# ls -l
+
+```
+
+这个卷和外部 一定有一个是同步的目录
+
+查看卷挂载的路径
+
+![image-20201012184104403](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201012184104403.png)
+
+
+
+测试文件是否同步出去的
+
+```
+[root@localhost /]# cd /var/lib/docker/volumes/8b65c340717479a7dc7c1b21e27a20913c2c545b8862ed0c79fbb7a7828c11c8/_data
+[root@localhost _data]# cd ..
+[root@localhost 8b65c340717479a7dc7c1b21e27a20913c2c545b8862ed0c79fbb7a7828c11c8]# cd /_data
+-bash: cd: /_data: 没有那个文件或目录
+[root@localhost 8b65c340717479a7dc7c1b21e27a20913c2c545b8862ed0c79fbb7a7828c11c8]# cd _data
+[root@localhost _data]# ls
+continer.txt
+[root@localhost _data]# 
+
+```
+
+
+
+这种方式我们用的特别多 
+
+假设构建镜像没有挂载卷 要手动挂载 -v 卷名：容器内的路径
+
+
+
+#### 数据卷容器
+
+两个mysql同步数据
+
 
 
 
