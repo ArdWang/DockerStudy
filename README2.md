@@ -1843,7 +1843,105 @@ continer.txt
 
 两个mysql同步数据
 
+![image-20201013155020660](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201013155020660.png)
 
+
+
+```java
+启动3个容器来测试 
+
+[root@localhost ~]# docker run -it --name docker01 kuangshen/centos:1.0
+[root@a8f6e592ead8 /]# ls
+bin  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var  volume01	volume02
+[root@a8f6e592ead8 /]# ls -l
+total 0
+lrwxrwxrwx.   1 root root   7 May 11  2019 bin -> usr/bin
+drwxr-xr-x.   5 root root 360 Oct 13 07:52 dev
+drwxr-xr-x.   1 root root  66 Oct 13 07:52 etc
+drwxr-xr-x.   2 root root   6 May 11  2019 home
+lrwxrwxrwx.   1 root root   7 May 11  2019 lib -> usr/lib
+lrwxrwxrwx.   1 root root   9 May 11  2019 lib64 -> usr/lib64
+drwx------.   2 root root   6 Aug  9 21:40 lost+found
+drwxr-xr-x.   2 root root   6 May 11  2019 media
+drwxr-xr-x.   2 root root   6 May 11  2019 mnt
+drwxr-xr-x.   2 root root   6 May 11  2019 opt
+dr-xr-xr-x. 164 root root   0 Oct 13 07:52 proc
+dr-xr-x---.   2 root root 162 Aug  9 21:40 root
+drwxr-xr-x.  11 root root 163 Aug  9 21:40 run
+lrwxrwxrwx.   1 root root   8 May 11  2019 sbin -> usr/sbin
+drwxr-xr-x.   2 root root   6 May 11  2019 srv
+dr-xr-xr-x.  13 root root   0 Sep 29 10:45 sys
+drwxrwxrwt.   7 root root 145 Aug  9 21:40 tmp
+drwxr-xr-x.  12 root root 144 Aug  9 21:40 usr
+drwxr-xr-x.  20 root root 262 Aug  9 21:40 var
+drwxr-xr-x.   2 root root   6 Oct 13 07:52 volume01
+drwxr-xr-x.   2 root root   6 Oct 13 07:52 volume02
+[root@a8f6e592ead8 /]# 
+
+
+# 启动第二个
+[root@localhost ~]# docker run -it --name docker02 --volumes-from docker01 kuangshen/centos:1.0
+[root@77959afd8830 /]# ls -l
+total 0
+lrwxrwxrwx.   1 root root   7 May 11  2019 bin -> usr/bin
+drwxr-xr-x.   5 root root 360 Oct 13 07:57 dev
+drwxr-xr-x.   1 root root  66 Oct 13 07:57 etc
+drwxr-xr-x.   2 root root   6 May 11  2019 home
+lrwxrwxrwx.   1 root root   7 May 11  2019 lib -> usr/lib
+lrwxrwxrwx.   1 root root   9 May 11  2019 lib64 -> usr/lib64
+drwx------.   2 root root   6 Aug  9 21:40 lost+found
+drwxr-xr-x.   2 root root   6 May 11  2019 media
+drwxr-xr-x.   2 root root   6 May 11  2019 mnt
+drwxr-xr-x.   2 root root   6 May 11  2019 opt
+dr-xr-xr-x. 168 root root   0 Oct 13 07:57 proc
+dr-xr-x---.   2 root root 162 Aug  9 21:40 root
+drwxr-xr-x.  11 root root 163 Aug  9 21:40 run
+lrwxrwxrwx.   1 root root   8 May 11  2019 sbin -> usr/sbin
+drwxr-xr-x.   2 root root   6 May 11  2019 srv
+dr-xr-xr-x.  13 root root   0 Sep 29 10:45 sys
+drwxrwxrwt.   7 root root 145 Aug  9 21:40 tmp
+drwxr-xr-x.  12 root root 144 Aug  9 21:40 usr
+drwxr-xr-x.  20 root root 262 Aug  9 21:40 var
+drwxr-xr-x.   2 root root   6 Oct 13 07:52 volume01
+drwxr-xr-x.   2 root root   6 Oct 13 07:52 volume02
+[root@77959afd8830 /]# 
+
+```
+
+![image-20201013160302902](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201013160302902.png)
+
+通过它同步数据共享
+
+![image-20201013160617254](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201013160617254.png)
+
+
+
+```
+可以测试的范围 docker01 docker02 docker03 可以删除其中一个 测试还是可以有数据的
+```
+
+![image-20201013161056465](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201013161056465.png)
+
+
+
+多个mysql 或者 redius 数据共享
+
+```
+[root@localhost ~]# docker run -d -p 3310:3306 -v /etc/mysql/conf.d -v /var/lib/mysql -e MYSQL_ROOT_PASSWORD=5324840 --name mysql01 mysql:5.7
+
+[root@localhost ~]# docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD=5324840 --name mysql02 --volumes-from mysql01 mysql:5.7
+
+# 这个时候可以实现2个容器数据同步
+
+```
+
+
+
+##### 结论：
+
+容器可以做一些配置信息的传递，数据卷容器的生命周期一直持续到没有人使用为止
+
+但是一旦持久化到了本地，这个时候，本地数据是不会被删除了
 
 
 
