@@ -1949,6 +1949,71 @@ drwxr-xr-x.   2 root root   6 Oct 13 07:52 volume02
 
 
 
+##### Dockerfile 介绍
+
+dockerfile 核心使用来构建 Docker得镜像得文件! 命令参数得脚本
+
+构建步骤
+
+1. 编写一个dockerfile得文件
+
+2. docker build构建一个镜像
+3. docker run 运行镜像
+4. docker push 发布镜像(DockerHub, 阿里云镜像仓库)
+
+
+
+查看一下官网是怎么做得
+
+![image-20201014182547266](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201014182547266.png)
+
+![image-20201014182710737](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201014182710737.png)
+
+
+
+发现官网得镜像都是基础包 很多功能没有 我们通常会自己搭建自己得镜像 centos+jdk+tomcat+node.js
+
+官方可以制作镜像 我们也可以
+
+
+
+##### Dockerfile构建过程
+
+###### 基础知识
+
+
+
+1. 每个关键字指令都是必须是大写字母
+2. 执行从上到下顺序执行
+3. #表示注释
+4. 每一个指令都会创建提交一个新得镜像 并提交
+
+
+
+![image-20201014183512968](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201014183512968.png)
+
+
+
+dockerfile 面向开发得，我们以后发布项目 做镜像 就需要编写dockerfile文件，这个文件非常简单
+
+Docker镜像 逐渐成为了企业交互得标准 我们必须要掌握
+
+springboot  开发 运行 部署 缺一不可
+
+DockerFile 构建文件 定义了一切得 源代码
+
+Dockerimages 通过Dockerfile构建生成镜像 最终发布和运行产品
+
+Docker容器 容器时镜像运行起来的服务器
+
+
+
+##### DockerFile的指令
+
+
+
+
+
 #### Docker 网络
 
 
