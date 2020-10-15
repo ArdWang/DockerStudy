@@ -2010,6 +2010,28 @@ Docker容器 容器时镜像运行起来的服务器
 
 ##### DockerFile的指令
 
+![image-20201015181259703](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201015181259703.png)
+
+```java
+FROM  # 基础镜像 一切从这里开始构建
+MAINTARINER #镜像是谁写的 你的姓名+邮箱
+RUN # Dokcer镜像构建时候需要运行的命令
+ADD #步 tomcat镜像 这个 tomcat 压缩包 添加内容
+WORKDIR # 镜像的工作目录 /
+VOLUME # 挂载的目录位置
+EXPOSE # 指令暴露的端口
+
+ls -a -l  docker run     
+    
+CMD # 指定这个容器启动的时候运行的命令 cmd echo 只有最后一个会生效 可被替代
+ENTRYPOINT # 指定这个容器启动的时候运行这个命令，可以追加命令
+ONBUILD # 当构建一个被继承 Dockerfile 这个时候运行ONBuild的指令 触发指令
+COPY # 类似ADD命令 将我们文件拷贝到镜像中
+ENV  # 构建的时候设置环境变量 es mysql -用户名 密码
+```
+
+以前我们使用别人的 现在我们知道这个指令后 我们自己写一个镜像
+
 
 
 
