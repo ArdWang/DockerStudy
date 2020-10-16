@@ -2032,6 +2032,58 @@ ENV  # 构建的时候设置环境变量 es mysql -用户名 密码
 
 以前我们使用别人的 现在我们知道这个指令后 我们自己写一个镜像
 
+##### 实战测试
+
+DockerHUb 中的镜像99% 镜像都是从这个基础镜像Form scratch 配置需要的软件和配置构建的
+
+![image-20201016182053111](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201016182053111.png)
+
+```java
+创建自己的Centos
+# 第一步编写 dockerfile的文件
+FROM centos
+MAINTAINER kuangshen<278161009@qq.com>
+ENV MYPATH /usr/local
+WORKDIR $MYPATH
+RUN yum -y install vim
+RUN yum -y install net-tools
+EXPOSE 80
+CMD echo $MYPATH 
+CMD echo "---------end--------"
+CMD /bin/bash
+
+# 通过 文件构建自己的镜像
+docker build -f dockerfile 文件路径 t镜像名:[版本号] .
+Removing intermediate container 68e3760d335d
+ ---> 2a08d72d263f
+Successfully built 2a08d72d263f
+Successfully tagged mycentos:0.1
+
+    
+# 测试运行    
+```
+
+对比之前原生的 centos 
+
+![image-20201016191645435](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201016191645435.png)
+
+我们自己写的
+
+![image-20201016191656865](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201016191656865.png)
+
+我们可以列出咱们本地镜像变更历史
+
+![image-20201016191816001](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201016191816001.png)
+
+我们平时拿到一个镜像 可以研究一下他是怎么做的？
+
+```
+练习
+CMD 和 ENTRYPOINT的区别
+```
+
+
+
 
 
 
