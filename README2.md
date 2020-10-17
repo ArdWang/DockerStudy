@@ -2039,6 +2039,7 @@ DockerHUb 中的镜像99% 镜像都是从这个基础镜像Form scratch 配置�
 ![image-20201016182053111](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201016182053111.png)
 
 ```java
+CD home 目录下
 创建自己的Centos
 # 第一步编写 dockerfile的文件
 FROM centos
@@ -2077,10 +2078,174 @@ Successfully tagged mycentos:0.1
 
 我们平时拿到一个镜像 可以研究一下他是怎么做的？
 
-```
+```java
 练习
 CMD 和 ENTRYPOINT的区别
+测试CMD
+
+vi dockerfile-cmd-test
+# 文件内容
+CMD ["ls","-a"] # 执行这个命令
+    
+    
+[root@localhost ~]# cd /
+[root@localhost /]# ls
+bin  boot  dev  etc  hello.txt  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@localhost /]# cd home
+[root@localhost home]# ls
+ceshi  dockerfile  docker-test-volume  java.tar.gz  kuangshen.java  mysql  newproject  project  soft  test.java  xiaowang
+[root@localhost home]# cd dockerfile
+[root@localhost dockerfile]# ls
+mydockerfile-centos
+[root@localhost dockerfile]# vim dockerfile-cmd-test
+-bash: vim: 未找到命令
+[root@localhost dockerfile]# vi dockerfile-cmd-test
+[root@localhost dockerfile]# docker build -f dockerfile-cmd-test -t cmdtest .
+Sending build context to Docker daemon  3.072kB
+Step 1/2 : FROM centos
+ ---> 0d120b6ccaa8
+Step 2/2 : CMD ["ls","-a"]
+ ---> Running in 3c9cc61e2ea3
+Removing intermediate container 3c9cc61e2ea3
+ ---> acdcec3e78a4
+Successfully built acdcec3e78a4
+Successfully tagged cmdtest:latest
+[root@localhost dockerfile]# 
+    
+# 接下来的 bulid构建镜像 
+[root@localhost dockerfile]# docker build -f dockerfile-cmd-test -t cmdtest .
+Sending build context to Docker daemon  3.072kB
+Step 1/2 : FROM centos
+ ---> 0d120b6ccaa8
+Step 2/2 : CMD ["ls","-a"]
+ ---> Running in 3c9cc61e2ea3
+Removing intermediate container 3c9cc61e2ea3
+ ---> acdcec3e78a4
+Successfully built acdcec3e78a4
+Successfully tagged cmdtest:latest
+
+# 通过 run执行  发现 ls -a 命令是生效了  
+[root@localhost dockerfile]# docker run acdcec3e78a4
+.
+..
+.dockerenv
+bin
+dev
+etc
+home
+lib
+lib64
+lost+found
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+[root@localhost dockerfile]# 
+
+#  想追加一个命令 -l ls -al 详细数据  
+[root@localhost dockerfile]# docker run acdcec3e78a4 -l
+docker: Error response from daemon: OCI runtime create failed: container_linux.go:349: starting container process caused "exec: \"-l\": executable file not found in $PATH": unknown.
+ERRO[0000] error waiting for container: context canceled 
+[root@localhost dockerfile]# 
+
+ # cmd 的情况下 替换了 CMD ["ls","-a"] 命令 -l 不是命令所以报错 必须要按照以下的来写 
+    
+ [root@localhost dockerfile]# docker run acdcec3e78a4 ls -al
+total 0
+drwxr-xr-x.   1 root root   6 Oct 17 10:23 .
+drwxr-xr-x.   1 root root   6 Oct 17 10:23 ..
+-rwxr-xr-x.   1 root root   0 Oct 17 10:23 .dockerenv
+lrwxrwxrwx.   1 root root   7 May 11  2019 bin -> usr/bin
+drwxr-xr-x.   5 root root 340 Oct 17 10:23 dev
+drwxr-xr-x.   1 root root  66 Oct 17 10:23 etc
+drwxr-xr-x.   2 root root   6 May 11  2019 home
+lrwxrwxrwx.   1 root root   7 May 11  2019 lib -> usr/lib
+lrwxrwxrwx.   1 root root   9 May 11  2019 lib64 -> usr/lib64
+drwx------.   2 root root   6 Aug  9 21:40 lost+found
+drwxr-xr-x.   2 root root   6 May 11  2019 media
+drwxr-xr-x.   2 root root   6 May 11  2019 mnt
+drwxr-xr-x.   2 root root   6 May 11  2019 opt
+dr-xr-xr-x. 172 root root   0 Oct 17 10:23 proc
+dr-xr-x---.   2 root root 162 Aug  9 21:40 root
+drwxr-xr-x.  11 root root 163 Aug  9 21:40 run
+lrwxrwxrwx.   1 root root   8 May 11  2019 sbin -> usr/sbin
+drwxr-xr-x.   2 root root   6 May 11  2019 srv
+dr-xr-xr-x.  13 root root   0 Sep 29 10:45 sys
+drwxrwxrwt.   7 root root 145 Aug  9 21:40 tmp
+drwxr-xr-x.  12 root root 144 Aug  9 21:40 usr
+drwxr-xr-x.  20 root root 262 Aug  9 21:40 var
+[root@localhost dockerfile]# 
+
 ```
+
+测试 ENTRYPOINT
+
+```java
+vi dockerfile-cmd-entrypoint
+# 文件内容
+ENTRYPOINT ["ls","-a"] # 执行这个命令
+
+
+[root@localhost dockerfile]# docker build -f dockerfile-cmd-entrypoint -t entrypoint-test .
+Sending build context to Docker daemon  4.096kB
+Step 1/2 : FROM centos
+ ---> 0d120b6ccaa8
+Step 2/2 : ENTRYPOINT ["ls","-a"]
+ ---> Running in 8ef5c0125e75
+Removing intermediate container 8ef5c0125e75
+ ---> 0af4249b47c3
+Successfully built 0af4249b47c3
+Successfully tagged entrypoint-test:latest
+[root@localhost dockerfile]# 
+    
+    
+# 测试如下
+# 我们追加命令 是追加到 ENTRYPOINT 的后面
+    
+[root@localhost dockerfile]# docker run 0af4249b47c3 -l
+total 0
+drwxr-xr-x.   1 root root   6 Oct 17 10:29 .
+drwxr-xr-x.   1 root root   6 Oct 17 10:29 ..
+-rwxr-xr-x.   1 root root   0 Oct 17 10:29 .dockerenv
+lrwxrwxrwx.   1 root root   7 May 11  2019 bin -> usr/bin
+drwxr-xr-x.   5 root root 340 Oct 17 10:29 dev
+drwxr-xr-x.   1 root root  66 Oct 17 10:29 etc
+drwxr-xr-x.   2 root root   6 May 11  2019 home
+lrwxrwxrwx.   1 root root   7 May 11  2019 lib -> usr/lib
+lrwxrwxrwx.   1 root root   9 May 11  2019 lib64 -> usr/lib64
+drwx------.   2 root root   6 Aug  9 21:40 lost+found
+drwxr-xr-x.   2 root root   6 May 11  2019 media
+drwxr-xr-x.   2 root root   6 May 11  2019 mnt
+drwxr-xr-x.   2 root root   6 May 11  2019 opt
+dr-xr-xr-x. 173 root root   0 Oct 17 10:29 proc
+dr-xr-x---.   2 root root 162 Aug  9 21:40 root
+drwxr-xr-x.  11 root root 163 Aug  9 21:40 run
+lrwxrwxrwx.   1 root root   8 May 11  2019 sbin -> usr/sbin
+drwxr-xr-x.   2 root root   6 May 11  2019 srv
+dr-xr-xr-x.  13 root root   0 Sep 29 10:45 sys
+drwxrwxrwt.   7 root root 145 Aug  9 21:40 tmp
+drwxr-xr-x.  12 root root 144 Aug  9 21:40 usr
+drwxr-xr-x.  20 root root 262 Aug  9 21:40 var
+[root@localhost dockerfile]# 
+    
+
+```
+
+
+
+Dockerfile中很多的命令都十分的相似 我们需要了解他们的区别，我们学习就是对比他们的效果
+
+
+
+##### 实战Tomcat镜像
 
 
 
