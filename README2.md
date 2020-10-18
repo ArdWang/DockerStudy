@@ -2247,9 +2247,125 @@ Dockerfile中很多的命令都十分的相似 我们需要了解他们的区别
 
 ##### 实战Tomcat镜像
 
+1. 准备镜像文件 tomcat压缩包 jdk压缩包
+
+   ![image-20201018164247104](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201018164247104.png)
+
+2. 编写dockerfile文件，官方命令 Dockerfile build的时候自动寻找这个文件，就不需要-f指定了
+
+![image-20201018164355540](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201018164355540.png)
 
 
 
+```shell
+# Dockerfile的文件
+FROM centos
+MAINTAINER ardwang<278161009@qq.com>
+
+COPY readme.txt /usr/local/readme.txt
+
+ADD jdk-8u11-linux-x64.tar.gz /usr/local/
+ADD apache-tomcat-9.0.22.tar.gz /usr/local/
+
+RUN yum -y install vim
+
+ENV MYPATH /usr/local
+WORKDIR $MYPATH
+ 
+ENV JAVA_HOME /usr/local/jdk1.8.0_11
+ENV CLASSPATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+ENV CATALINA_HOME /usr/local/apache-tomcat-9.0.22
+ENV CATALINA_BASH /usr/local/apache-tomcat-9.0.22
+ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/lib:$CATALINA_HOME/bin
+ 
+EXPOSE 8080
+ 
+CMD /usr/local/apache-tomcat-9.0.22/bin/startup.sh && tail -F /url/local/apache-tomcat-9.0.22/bin/logs/cataline.out
+
+```
+
+3. 构建镜像
+
+   ```shell
+   # dokcer build -t diytomcat .
+   
+   ```
+
+   
+
+   4. 挂载目录
+
+      ```shell
+      [root@localhost tomcat]# docker run -d -p 9090:8080 --name kuangshentomcat3 -v /home/kuangshen/build/tomcat/test:/usr/local/apache-tomcat-9.0.22/webapps/test -v /home/kuangshen/build/tomcat/tomcatlogs/:/usr/local/apache-tomcat-9.0.22/logs diytomcat
+      
+      
+      ```
+
+      
+
+   
+
+5. 查看进入目录
+
+   ```shell
+   [root@localhost tomcat]# docker exec -it 3bd049d0448 /bin/bash
+   
+   ```
+
+   
+
+6. 发布项目（由于做了卷盖在，我们直接再本地编写项目发布）
+
+   ```shell
+   <?xml version="1.0" encoding="UTF-8"?>    
+   <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+   xmlns="http://java.sun.com/xml/ns/javaee" 
+   xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+   http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+   id="WebApp_ID" version="3.0">
+       <!-- 指定servlet规范的版本3.0 -->
+       <filter>
+           <filter-name>struts2</filter-name>
+           <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+       </filter>
+   
+       <filter-mapping>                                        
+           <filter-name>struts2</filter-name>
+           <url-pattern>/*</url-pattern>
+       </filter-mapping> 
+       <welcome-file-list>
+           <!-- index page -->
+           <welcome-file>index.jsp</welcome-file>
+       </welcome-file-list>
+   </web-app>
+   ```
+
+   ```shell
+   <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+   <%@ taglib prefix="math" tagdir="/WEB-INF/tags/" %>
+   <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+   <html>
+   <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Hello ArdWang</title>
+   </head>
+   <body>
+   
+   <%
+   	System.out.println("--------my test web logs");
+   %>
+   </body>
+   </html>
+   ```
+
+   发现项目部署成功而可以访问，可以直接访问OK
+
+   以后开发的流程：需要掌握Dockerfile的编写，我们之后一切使用docker镜像的发布运行!
+
+build
+
+[root@localhost tomcat]# docker build -t diytomcat . 
 
 
 
