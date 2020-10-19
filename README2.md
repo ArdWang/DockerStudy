@@ -2367,6 +2367,161 @@ build
 
 [root@localhost tomcat]# docker build -t diytomcat . 
 
+##### 发布自己的镜像
+
+|DockerHub |
+
+1. 地址 https://hub.docker.com/ 注册自己的账号
+
+2. 确定这个账号可以登录
+
+3. 在我们服务器上提交自己的镜像
+
+   ```shell
+   # 必须要登录之后才能放上去
+   [root@localhost ~]# docker login --help
+   
+   Usage:	docker login [OPTIONS] [SERVER]
+   
+   Log in to a Docker registry.
+   If no server is specified, the default is defined by the daemon.
+   
+   Options:
+     -p, --password string   Password
+         --password-stdin    Take the password from stdin
+     -u, --username string   Username
+   [root@localhost ~]# 
+   
+   ```
+
+4. 登录完成后就可以登录上去
+
+   ```
+   # 登录方式如下
+   [root@localhost ~]# docker login -u ardwang
+   Password: 
+   WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+   Configure a credential helper to remove this warning. See
+   https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+   
+   Login Succeeded
+   [root@localhost ~]# 
+   
+   ```
+
+   
+
+5. 上传自己的docker包
+
+   ```shell
+   
+   [root@localhost ~]# docker push diytomcat
+   The push refers to repository [docker.io/library/diytomcat]
+   4b590ee410c5: Preparing 
+   8a3fed6f6c0a: Preparing 
+   b89df9327dfe: Preparing 
+   b2a5d5f52688: Preparing 
+   291f6e44771a: Preparing 
+   denied: requested access to the resource is denied #被拒绝了
+   [root@localhost ~]# 
+   
+   ```
+
+   上述情况如果出现错误 denied: requested access to the resource is denied
+
+   ```shell
+   # 第一步执行修改名字 和版本号
+   Usage:  docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+   [root@localhost ~]# docker tag diytomcat ardwang/diytomcat:latest
+   # 第二步执行以下命令
+   [root@localhost ~]# docker push ardwang/diytomcat
+   # 上传成功之后 出现以下就对了
+   [root@localhost ~]# docker push ardwang/diytomcat
+   The push refers to repository [docker.io/ardwang/diytomcat]
+   4b590ee410c5: Pushed 
+   8a3fed6f6c0a: Pushed 
+   b89df9327dfe: Pushed 
+   b2a5d5f52688: Pushed 
+   291f6e44771a: Pushed 
+   latest: digest: sha256:79f2e775ae48bbf0b98914b7c16f16cef1d108757b82589b7e7b1e0b1237133c size: 1373
+   
+   
+   ```
+
+   ![image-20201019185704188](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019185704188.png)
+
+   成功之后可以搜索
+
+   提交也是按照层级提交的
+
+   
+
+##### 发布阿里云镜像
+
+1. 登录阿里云找到容器镜像服务
+
+2. 找到容器镜像服务
+
+   ```shell
+   https://cr.console.aliyun.com/cn-shenzhen/instances/namespaces
+   ```
+
+   
+
+3. 找到命名空间 并创建命名空间 为了隔离
+
+   ![image-20201019190748080](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019190748080.png)
+
+4. 创建容器镜像
+
+   ![image-20201019190918543](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019190918543.png)
+
+   ![image-20201019190948002](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019190948002.png)
+
+5. 浏览一下这个页面的信息
+
+   ![image-20201019191113777](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019191113777.png)
+
+   ![image-20201019191145718](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019191145718.png)
+
+   ```shell
+   # 退出当前的镜像
+   [root@localhost ~]# docker logout
+   Removing login credentials for https://index.docker.io/v1/
+   
+   ###登录当前阿里云的账号
+   $ sudo docker login --username=lhyd0001008 registry.cn-shenzhen.aliyuncs.com
+   # 这一步我们已经有了 可以不使用这一步
+   $ sudo docker tag [ImageId] registry.cn-shenzhen.aliyuncs.com/bilibili-ardwang/ardwang-test:[镜像版本号]
+   
+   # push当前的版本
+   $ sudo docker push registry.cn-shenzhen.aliyuncs.com/bilibili-ardwang/ardwang-test:ardwang/diytomcat:latest
+   
+   ```
+
+   ```shell
+   # 这个是帮助文档
+   https://blog.csdn.net/qq_39007083/article/details/104571402
+   ```
+
+   
+
+   提交成功后 是下载版本
+
+   ![image-20201019192821310](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019192821310.png)
+
+
+
+![image-20201019193019559](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019193019559.png)
+
+
+
+阿里云镜像的步数 参考 官方的地址
+
+DokcerHub 阿里云 也可以公有也有私有的 docker pull 拉下来就可以用
+
+
+
 
 
 #### Docker 网络
