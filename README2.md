@@ -2520,13 +2520,115 @@ build
 
 DokcerHub 阿里云 也可以公有也有私有的 docker pull 拉下来就可以用
 
+##### 小结
+
+![image-20201020180844625](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020180844625.png)
+
+```
+docker save -o 保存
+docker load -i -q
+```
+
+![image-20201020181222695](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020181222695.png)
 
 
 
 
-#### Docker 网络
+
+#### Docker 网络(铺垫 容器编排)
+
+##### 理解Docker0网络
+
+```shell
+# 清除所有内容
+# 运行全部容器
+[root@localhost ~]# docker rm -f $(docker ps -aq)
+# 移除全部镜像
+[root@localhost ~]# docker rmi -f $(docker images -aq)
+
+```
+
+查看所有的网络
+
+```shell
+[root@localhost ~]# ip addr
+```
+
+![image-20201020182220206](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020182220206.png)
 
 
+
+三个网络
+
+```
+# 问题 dokcer是如何处理容器的网络
+```
+
+![image-20201020182326501](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020182326501.png)
+
+```shell
+docker run -d -P --name tomcat01 tomcat
+
+# 查看内部网络地址 ip addr
+[root@localhost ~]# docker exec -it tomcat01 ip addr 发现容器启动的时候会得到一个 eth0@if90
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+89: eth0@if90: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+    link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+
+# 思考 linux 能不能 ping 通内部容器
+
+[root@localhost ~]# ping 172.17.0.2
+PING 172.17.0.2 (172.17.0.2) 56(84) bytes of data.
+64 bytes from 172.17.0.2: icmp_seq=1 ttl=64 time=0.361 ms
+64 bytes from 172.17.0.2: icmp_seq=2 ttl=64 time=0.050 ms
+
+# linux 可以ping dokcer 容器内部
+```
+
+```shell
+# 原理
+```
+
+1. 我们每安装启动一个docker容器， docker就会给 docker容器分配一个ip，我们只要安装了docker,就会有一个网卡 docker0 桥接模式，使用的技术是 evth-pair技术
+
+   再次执行测试 ip addr
+
+![image-20201020184122661](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020184122661.png)
+
+2. 在启动一个容器测试 发现又多了一对网卡
+
+   ![image-20201020184453170](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020184453170.png)
+
+![image-20201020184606130](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020184606130.png)
+
+```shell
+我们发现这些容器网卡，这是一对一对的
+# evth-pair 就是一对的虚拟设备的接口，他们都是成对出现的，一端连接协议，一端彼此相连
+# 正因为有这个特性， evth-pair 充当一个桥梁，连接虚拟网络设备的
+# openstack Docker容器之间的连接 OVS的连接 都是使用 evth-pair 技术
+```
+
+3. 我们来测试 tomcat01 和 tomcat02是可以ping的
+
+   ```shell
+   [root@localhost ~]# docker exec -it tomcat02 ping 172.18.0.2
+   PING 172.18.0.2 (172.18.0.2) 56(84) bytes of data.
+   # 结论 容器和容器之间是可以相互ping
+   ```
+
+   网络类型图
+
+   ![image-20201020185719476](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020185719476.png)
+
+   
+
+192.168.0.1 路由器
 
 企业实战
 
