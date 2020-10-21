@@ -2626,9 +2626,51 @@ PING 172.17.0.2 (172.17.0.2) 56(84) bytes of data.
 
    ![image-20201020185719476](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020185719476.png)
 
+   结论 tomcat01和tomcat02都是共用一个路由器 docker0路由
+   
+   所有的容器不指定网络的情况下，都是docker0路由定的，docker会给我们容器分配一个默认的可用IP 
+   
+   0~255 A B C
+   
+   255.255.0.1/16  域 局域网  教室 24  大网咯 16
+   
+    255*255 = 65535
+   
+   00000000.00000000.00000000.00000000
+   
+   255.255.255.255
+   
    
 
+##### 小结
+
+
+
+Docker 使用的是 Linux桥接 宿主机是一个docker容器的网桥 docker0
+
+![image-20201021183605814](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201021183605814.png)
+
 192.168.0.1 路由器
+
+Docker 中的所有的网络接口都是虚拟的，虚拟的转发效率高
+
+只要容器删除，对应的网桥就没了
+
+springcloud fegin 
+
+mysql ip 
+
+
+
+#### 容器互联--link
+
+```shell
+思考一个场景，我们编写一个微服务 database url=ip 项目不重启 数据ip换了 我们希望可以处理这个问题我们可以通过名字来访问这个服务容器?
+```
+
+
+
+
 
 企业实战
 
