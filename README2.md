@@ -2668,6 +2668,96 @@ mysql ip
 思考一个场景，我们编写一个微服务 database url=ip 项目不重启 数据ip换了 我们希望可以处理这个问题我们可以通过名字来访问这个服务容器?
 ```
 
+```
+让这个网络连接
+发现通过 --link就能够连接
+[root@localhost /]# docker run -d -P --name tomcat03 --link tomcat02  tomcat
+4a0ac24891a6b7b3f1a1e0e9f6f7cb402f73c805319213ec050ba29fda700491
+[root@localhost /]# docker exec -it tomcat03 ping tomcat02
+PING tomcat02 (172.17.0.3) 56(84) bytes of data.
+64 bytes from tomcat02 (172.17.0.3): icmp_seq=1 ttl=64 time=0.089 ms
+64 bytes from tomcat02 (172.17.0.3): icmp_seq=2 ttl=64 time=0.056 ms
+64 bytes from tomcat02 (172.17.0.3): icmp_seq=3 ttl=64 time=0.048 ms
+64 bytes from tomcat02 (172.17.0.3): icmp_seq=4 ttl=64 time=0.048 ms
+64 bytes from tomcat02 (172.17.0.3): icmp_seq=5 ttl=64 time=0.048 ms
+^C
+--- tomcat02 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 5ms
+rtt min/avg/max/mdev = 0.048/0.057/0.089/0.018 ms
+[root@localhost /]# 
+
+# 反向可以ping通吗？
+docker exec -it tomcat02 ping tomcat03 是不可以 ping通的
+```
+
+![image-20201022181626832](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201022181626832.png)
+
+
+
+探究
+
+![image-20201022181716322](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201022181716322.png)
+
+```shell
+docker inspect tomcat02
+```
+
+其实 tomcat03 就是在本地配置了tomcat02的配置
+
+```shell
+hosts 破解绑定
+127.0.0.1 www.baidu.com
+```
+
+![image-20201022182318712](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201022182318712.png)
+
+```
+# 原理探究
+# 查看 hosts 配置 在这里原理发现
+[root@localhost /]# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+tomcat              latest              891fcd9c5b3a        8 days ago          647MB
+haproxy             latest              8e202ffaa1a8        6 weeks ago         93.3MB
+[root@localhost /]# docker exec -it tomcat03 cat /etc/hosts 
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+ff00::0	ip6-mcastprefix
+ff02::1	ip6-allnodes
+ff02::2	ip6-allrouters
+172.17.0.3	tomcat02 30c75d4d8c62
+172.17.0.4	4a0ac24891a6
+[root@localhost /]# 
+
+```
+
+--link 就是我们在 hosts 配置中增加了一个  172.17.0.3 tomcat02 30c75d4d8c62
+
+我们真实开发Docker 已经不建议使用 --link 了
+
+自定义网络 不适用 docker0
+
+docker0问题 他不支持容器名连接访问
+
+```
+# 查看
+[root@localhost /]# docker exec -it tomcat02 cat /etc/hosts 
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+ff00::0	ip6-mcastprefix
+ff02::1	ip6-allnodes
+ff02::2	ip6-allrouters
+172.17.0.3	30c75d4d8c62
+[root@localhost /]# 
+```
+
+
+
+##### 自定义网络
+
+
+
 
 
 
