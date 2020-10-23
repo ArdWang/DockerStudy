@@ -2756,9 +2756,140 @@ ff02::2	ip6-allrouters
 
 ##### 自定义网络
 
+容器互联
+
+```
+查看所有得docker网络
+```
 
 
 
+![image-20201023181444502](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201023181444502.png)
+
+
+
+##### 网络模式
+
+bridge: 桥接 docker （默认，也使用bridge） 搭桥 0.2 0.1 0.3
+
+none: 不配置网络
+
+host: 和宿主机共享网络
+
+container : 容器内网络连通(用得少 局限性很大)
+
+测试
+
+```shell
+# 我们直接启动得命令 --net bridge, 而这个就是我们得docker01
+docker run -d -P --name tomcat01 tomcat
+[root@localhost ~]# docker run -d -P --name tomcat01 --net bridge tomcat
+
+# docker0 特点 默认 域名不能访问 --link可以打通连接
+# 我们可以自定义网络
+[root@localhost ~]# docker network create --help
+
+Usage:	docker network create [OPTIONS] NETWORK
+
+Create a network
+
+Options:
+      --attachable           Enable manual container attachment
+      --aux-address map      Auxiliary IPv4 or IPv6 addresses used by Network driver (default map[])
+      --config-from string   The network from which copying the configuration
+      --config-only          Create a configuration only network
+  -d, --driver string        Driver to manage the Network (default "bridge")
+      --gateway strings      IPv4 or IPv6 Gateway for the master subnet
+      --ingress              Create swarm routing-mesh network
+      --internal             Restrict external access to the network
+      --ip-range strings     Allocate container ip from a sub-range
+      --ipam-driver string   IP Address Management Driver (default "default")
+      --ipam-opt map         Set IPAM driver specific options (default map[])
+      --ipv6                 Enable IPv6 networking
+      --label list           Set metadata on a network
+  -o, --opt map              Set driver specific options (default map[])
+      --scope string         Control the network's scope
+      --subnet strings       Subnet in CIDR format that represents a network segment
+[root@localhost ~]# 
+
+# 创建自定义网络
+--driver bridge
+--subnet 192.168.0.0/16 192.168.0.2 192.168.255.255
+--gateway 
+[root@localhost ~]# docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet
+
+[root@localhost ~]# docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+242b928de466        bridge              bridge              local
+0fdff390fb28        host                host                local
+7e3c6f0f66f0        mynet               bridge              local
+8405882dac96        net1                bridge              local
+8b020fd01242        none                null                local
+[root@localhost ~]# 
+
+
+```
+
+![image-20201023182446649](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201023182446649.png)
+
+
+
+```shell
+# 测试
+[root@localhost ~]# docker run -d -P --name tomcat-net-01 --net mynet tomcat
+
+[root@localhost ~]# docker run -d -P --name tomcat-net-02 --net mynet tomcat
+
+```
+
+![image-20201023182710456](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201023182710456.png)
+
+自己搭建网络得好处
+
+```
+# 再次测试ping连接 
+
+[root@localhost ~]# docker exec -it tomcat-net-01 ping 192.168.0.3
+PING 192.168.0.3 (192.168.0.3) 56(84) bytes of data.
+64 bytes from 192.168.0.3: icmp_seq=1 ttl=64 time=0.197 ms
+64 bytes from 192.168.0.3: icmp_seq=2 ttl=64 time=0.121 ms
+64 bytes from 192.168.0.3: icmp_seq=3 ttl=64 time=0.052 ms
+64 bytes from 192.168.0.3: icmp_seq=4 ttl=64 time=0.058 ms
+^C
+--- 192.168.0.3 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 4ms
+rtt min/avg/max/mdev = 0.052/0.107/0.197/0.058 ms
+
+#现在不使用 --link也可以ping名字
+
+[root@localhost ~]# docker exec -it tomcat-net-01 ping tomcat-net-02
+PING tomcat-net-02 (192.168.0.3) 56(84) bytes of data.
+64 bytes from tomcat-net-02.mynet (192.168.0.3): icmp_seq=1 ttl=64 time=0.108 ms
+64 bytes from tomcat-net-02.mynet (192.168.0.3): icmp_seq=2 ttl=64 time=0.116 ms
+64 bytes from tomcat-net-02.mynet (192.168.0.3): icmp_seq=3 ttl=64 time=0.050 ms
+^C
+--- tomcat-net-02 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 3ms
+rtt min/avg/max/mdev = 0.050/0.091/0.116/0.030 ms
+[root@localhost ~]# 
+
+
+
+```
+
+我们自定义得网络docker都已经帮我们维护好了对应得关系，推荐我们平时都使用这种网络
+
+ 好处：
+
+redis- 不同得集群使用不同得网络，保证集群安全和健康得
+
+mysql- 
+
+![image-20201023183131472](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201023183131472.png)
+
+
+
+#### 网络连通
 
 
 
