@@ -2891,6 +2891,37 @@ mysql-
 
 #### 网络连通
 
+![image-20201024174447989](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201024174447989.png)
+
+```shell
+[root@localhost ~]# docker network connect --help
+
+```
+
+![image-20201024174548978](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201024174548978.png)
+
+```shell
+# 测试打通 tomcat01  mynet
+# 连通之后 就是将我们 tomcat01 放到了 mynet 网络下
+# 一个容器两个ip地址 阿里云服务器 公网ip 和 私有ip
+# 01 容器跟网络是连接通得
+[root@localhost ~]# docker network connect mynet tomcat01
+[root@localhost ~]# docker network inspect mynet
+
+# 发现 tomcat02没有连通
+[root@localhost ~]# docker exec -it tomcat02 ping tomcat-net-01
+ping: tomcat-net-01: Name or service not known
+[root@localhost ~]# 
+```
+
+![image-20201024174858139](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201024174858139.png)
+
+结论： 假设要跨网络操作别人 就需要使用docker connect 连通...
+
+
+
+#### 实战：部署 Redis集群
+
 
 
 企业实战
