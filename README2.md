@@ -2922,6 +2922,154 @@ ping: tomcat-net-01: Name or service not known
 
 #### 实战：部署 Redis集群
 
+![image-20201025161510477](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201025161510477.png)
+
+
+
+```shell
+shell 脚本
+
+```
+
+```shell
+# 创建网卡
+# 首先删除容器
+[root@localhost ~]# docker rm -f $(docker ps -aq)
+# 创建网卡
+docker network create redis --subnet 172.38.0.0/16
+
+# 通过脚本创建六个 redis 配置
+
+for port in $(seq 1 6);
+do
+mkdir -p /mydata/redis/node-${port}/conf
+touch /mydata/redis/node-${port}/conf/redis.conf
+cat << EOF >>/mydata/redis/node-${port}/conf/redis.conf
+port 6379
+bind 0.0.0.0
+cluster-enabled yes
+cluster-config-file nodes.conf
+cluster-node-timeout 5000
+cluster-announce-ip 172.38.0.1${port}
+cluster-announce-port 6379
+cluster-announce-bus-port 16379
+appendonly yes
+EOF
+done
+
+# 查看
+[root@localhost conf]# cat redis.conf
+port 6379
+bind 0.0.0.0
+cluster-enabled yes
+cluster-config-file nodes.conf
+cluster-node-timeout 5000
+cluster-announce-ip 172.38.0.11
+cluster-announce-port 6379
+cluster-announce-bus-port 16379
+appendonly yes
+[root@localhost conf]# 
+
+# 启动
+docker run -p 637${port}:6379 -p 1637${port}:16379 --name redis-${port} -v /mydata/redis/node-${port}/data:/data -v /mydata/redis/node-${port}/conf/redis.conf:/etc/redis/redis.conf -d --net redis --ip 172.38.0.1${port} redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf
+
+docker run -p 6371:6379 -p 16371:16379 --name redis-1 -v /mydata/redis/node-1/data:/data -v /mydata/redis/node-1/conf/redis.conf:/etc/redis/redis.conf -d --net redis --ip 172.38.0.11 redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf
+
+docker run -p 6372:6379 -p 16372:16379 --name redis-2 -v /mydata/redis/node-2/data:/data -v /mydata/redis/node-2/conf/redis.conf:/etc/redis/redis.conf -d --net redis --ip 172.38.0.12 redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf
+
+docker run -p 6373:6379 -p 16373:16379 --name redis-3 -v /mydata/redis/node-3/data:/data -v /mydata/redis/node-3/conf/redis.conf:/etc/redis/redis.conf -d --net redis --ip 172.38.0.13 redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf
+
+docker run -p 6374:6379 -p 16374:16379 --name redis-4 -v /mydata/redis/node-4/data:/data -v /mydata/redis/node-4/conf/redis.conf:/etc/redis/redis.conf -d --net redis --ip 172.38.0.14 redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf
+
+docker run -p 6375:6379 -p 16375:16379 --name redis-5 -v /mydata/redis/node-5/data:/data -v /mydata/redis/node-5/conf/redis.conf:/etc/redis/redis.conf -d --net redis --ip 172.38.0.15 redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf
+
+docker run -p 6376:6379 -p 16376:16379 --name redis-6 -v /mydata/redis/node-6/data:/data -v /mydata/redis/node-6/conf/redis.conf:/etc/redis/redis.conf -d --net redis --ip 172.38.0.16 redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf
+
+# 进入
+[root@localhost conf]# docker exec -it redis-1 /bin/sh
+
+# 连接集群
+redis-cli --cluster create 172.38.0.11:6379 172.38.0.12:6379 172.38.0.13:6379 172.38.0.14:6379 172.38.0.15:6379 172.38.0.16:6379 --cluster-replicas 1
+
+[root@localhost conf]# docker exec -it redis-1 /bin/sh
+/data # redis-cli --cluster create 172.38.0.11:6379 172.38.0.12:6379 172.38.0.13:6379 172.38.0.14:6379 172.38.0.15:6379 172.38.0
+.16:6379 --cluster-replicas 1
+>>> Performing hash slots allocation on 6 nodes...
+Master[0] -> Slots 0 - 5460
+Master[1] -> Slots 5461 - 10922
+Master[2] -> Slots 10923 - 16383
+Adding replica 172.38.0.15:6379 to 172.38.0.11:6379
+Adding replica 172.38.0.16:6379 to 172.38.0.12:6379
+Adding replica 172.38.0.14:6379 to 172.38.0.13:6379
+M: 48390f8a02a0e45dd91faf575216aa2885b22a76 172.38.0.11:6379
+   slots:[0-5460] (5461 slots) master
+M: 69fc8ff2e1d3fe02004f5e2e767468466e505916 172.38.0.12:6379
+   slots:[5461-10922] (5462 slots) master
+M: e35addb81c76fd5e04590b321b000e1349c7d49a 172.38.0.13:6379
+   slots:[10923-16383] (5461 slots) master
+S: b90b7da0342b706022b510e935f09561c645cf63 172.38.0.14:6379
+   replicates e35addb81c76fd5e04590b321b000e1349c7d49a
+S: 94f20b6dd9b6379eaab4eda3cbaaff4c744f3b11 172.38.0.15:6379
+   replicates 48390f8a02a0e45dd91faf575216aa2885b22a76
+S: dac16825f3042f45a333b9392d013dc647293449 172.38.0.16:6379
+   replicates 69fc8ff2e1d3fe02004f5e2e767468466e505916
+Can I set the above configuration? (type 'yes' to accept): yes
+>>> Nodes configuration updated
+>>> Assign a different config epoch to each node
+>>> Sending CLUSTER MEET messages to join the cluster
+Waiting for the cluster to join
+...
+>>> Performing Cluster Check (using node 172.38.0.11:6379)
+M: 48390f8a02a0e45dd91faf575216aa2885b22a76 172.38.0.11:6379
+   slots:[0-5460] (5461 slots) master
+   1 additional replica(s)
+S: 94f20b6dd9b6379eaab4eda3cbaaff4c744f3b11 172.38.0.15:6379
+   slots: (0 slots) slave
+   replicates 48390f8a02a0e45dd91faf575216aa2885b22a76
+S: dac16825f3042f45a333b9392d013dc647293449 172.38.0.16:6379
+   slots: (0 slots) slave
+   replicates 69fc8ff2e1d3fe02004f5e2e767468466e505916
+M: 69fc8ff2e1d3fe02004f5e2e767468466e505916 172.38.0.12:6379
+   slots:[5461-10922] (5462 slots) master
+   1 additional replica(s)
+S: b90b7da0342b706022b510e935f09561c645cf63 172.38.0.14:6379
+   slots: (0 slots) slave
+   replicates e35addb81c76fd5e04590b321b000e1349c7d49a
+M: e35addb81c76fd5e04590b321b000e1349c7d49a 172.38.0.13:6379
+   slots:[10923-16383] (5461 slots) master
+   1 additional replica(s)
+[OK] All nodes agree about slots configuration.
+>>> Check for open slots...
+>>> Check slots coverage...
+[OK] All 16384 slots covered.
+
+
+```
+
+我挂掉redis-3
+
+![image-20201025170735025](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201025170735025.png)
+
+
+
+然后发现还是可以查询得到 14然后直接去替补
+
+
+
+![image-20201025170700889](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201025170700889.png)
+
+
+
+我们使用docker之后，所有得技术都会慢慢得变成得简单!
+
+
+
+#### SpringBoot微服务打包Docker镜像
+
+
+
+
+
 
 
 企业实战
