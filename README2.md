@@ -3066,9 +3066,97 @@ M: e35addb81c76fd5e04590b321b000e1349c7d49a 172.38.0.13:6379
 
 #### SpringBoot微服务打包Docker镜像
 
+1. 构建springboot项目
 
+2. 打包应用
 
+3. 编写dockerfile
 
+4. 构建镜像
+
+   ```shell
+   [root@localhost ~]# cd /home
+   [root@localhost home]# ls
+   ceshi       docker-test-volume  kuangshen       mysql       project  test.java
+   dockerfile  java.tar.gz         kuangshen.java  newproject  soft     xiaowang
+   [root@localhost home]# mkdir idea
+   [root@localhost home]# cd idea
+   [root@localhost idea]# ls
+   [root@localhost idea]# ls
+   demo-0.0.1-SNAPSHOT.jar  Dockerfile
+   [root@localhost idea]# ll
+   总用量 16164
+   -rw-r--r--. 1 root root 16545330 10月 26 18:58 demo-0.0.1-SNAPSHOT.jar
+   -rw-r--r--. 1 root root      121 10月 26 19:06 Dockerfile
+   [root@localhost idea]# 
+   
+   ```
+
+   
+
+5. 发布运行
+
+```shell
+[root@localhost idea]# docker build -t kuangshen666 .
+
+```
+
+```shell
+[root@localhost idea]# docker build -t kuangshen666 .
+Sending build context to Docker daemon  16.55MB
+Step 1/5 : FROM java:8
+ ---> d23bdf5b1b1b
+Step 2/5 : COPY *.java /app.jar
+COPY failed: no source files were specified
+[root@localhost idea]# docker build -t kuangshen666 .
+Sending build context to Docker daemon  16.55MB
+Step 1/5 : FROM java:8
+ ---> d23bdf5b1b1b
+Step 2/5 : COPY *.java /app.jar
+COPY failed: no source files were specified
+[root@localhost idea]# docker build -t kuangshen666 .
+Sending build context to Docker daemon  16.55MB
+Step 1/5 : FROM java:8
+ ---> d23bdf5b1b1b
+Step 2/5 : COPY *.jar /app.jar
+ ---> 8879b0a5d5a9
+Step 3/5 : CMD ["--server.port=8080"]
+ ---> Running in 0d275c5fe0e0
+Removing intermediate container 0d275c5fe0e0
+ ---> b4eae08e2517
+Step 4/5 : EXPOSE 8080
+ ---> Running in 03525e0b70fd
+Removing intermediate container 03525e0b70fd
+ ---> c2825e97a6dd
+Step 5/5 : ENTRYPOINT ["java","-jar","/app.jar"]
+ ---> Running in f59618cdc08f
+Removing intermediate container f59618cdc08f
+ ---> 6cd89347078e
+Successfully built 6cd89347078e
+Successfully tagged kuangshen666:latest
+[root@localhost idea]# 
+
+# 启动 并测试成功
+[root@localhost idea]# docker run -d -P --name kuangshen-springboot-web kuangshen666
+31278440978c445c778d31e3164aa45be3ef66024b1681e91fd3b10675770175
+[root@localhost idea]# docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                     NAMES
+31278440978c        kuangshen666        "java -jar /app.jar …"   30 seconds ago      Up 29 seconds       0.0.0.0:32777->8080/tcp   kuangshen-springboot-web
+[root@localhost idea]# curl localhost:32777
+{"timestamp":"2020-10-26T11:46:06.418+00:00","status":404,"error":"Not Found","message":"","path":"/"}[root@localhost idea]# curl localhost:32777/hello
+Hello,Kuangshen[root@localhost idea]# 
+
+```
+
+最红获取地址 http://192.168.3.47:32777/hello
+
+![image-20201026195020728](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026195020728.png)
+
+以后使用了docker之后，给别人交付的就是一个镜像即可
+
+到了这里我们已经完全够用了Docker !
+
+预告：如果有很多镜像 ？？ 100 个镜像
 
 
 
@@ -3076,8 +3164,12 @@ M: e35addb81c76fd5e04590b321b000e1349c7d49a 172.38.0.13:6379
 
 
 
-Docker Compose
+Docker Compose 
 
 
 
-CI/CD jenkins 流水线！
+Docker swarm k8s
+
+
+
+CI/CD 之jenkins 流水线！
