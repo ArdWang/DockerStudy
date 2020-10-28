@@ -232,8 +232,6 @@ systemctl start docker
 判断是否安装成功
 
 ```
-[root@localhost /]# dokcer version
--bash: dokcer: 未找到命令
 [root@localhost /]# docker version
 Client: Docker Engine - Community
  Version:           19.03.13
@@ -3164,16 +3162,56 @@ Hello,Kuangshen[root@localhost idea]#
 
 
 
-企业实战
+##### Docker(下半场)
+
+所有的学习都往官网文档去学习
+
+```shell
+卸载docker
+
+yum -y remove docker-ce docker-ce-cli  containerd.io
+
+[root@localhost ~]# rm -rf /var/lib/docker
+
+sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+                  
+sudo yum install -y yum-utils
 
 
 
-Docker Compose 
+```
+
+![image-20201028182811844](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201028182811844.png)
 
 
 
-Docker swarm k8s
+#### Docker Compose
+
+ ##### 介绍
 
 
+
+
+
+#### Docker swarm k8s
+
+##### Docker Stack
+
+#### Docker Secret
+
+
+
+
+
+#### K8S
+
+容器单独没有什么意义 容器编排
 
 CI/CD 之jenkins 流水线！
