@@ -3196,11 +3196,88 @@ sudo yum install -y yum-utils
 
  ##### 介绍
 
+DockerFile build run 手动操作，单个容器!
 
+微服务 100个微服务! 依赖关系
+
+Docker Compose 来轻松管理容器 定义运行多个容器
+
+单体应用 
+
+k8s 描述文件
+
+```shell
+官方介绍 定义和运行多个容器 
+YAML file 配置文件
+single command 命令有哪些
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a Compose file to configure your application's services. Then, using a single command, you create and start all the services from your configuration. To learn more about all the features of Compose see the list of features.
+
+所有的环境都可以使用 compose
+Compose is great for development, testing, and staging environments, as well as CI workflows. You can learn more about each case in Common Use Cases.
+
+Using Compose is basically a three-step process.
+三个步猪：
+保证项目DockerFile 在项目中任何地方运行
+Define your app's environment with a Dockerfile so it can be reproduced anywhere.
+
+docker-compose.yml
+
+Define the services that make up your app in docker-compose.yml so they can be run together in an isolated environment.
+
+services 什么是服务
+docker-compose.yml 这个文件怎么写
+
+Lastly, run docker-compose up and Compose will start and run your entire app
+
+启动项目
+```
+
+作用： 批量容器编排.
+
+```
+我自己理解
+```
+
+Compose 是Docker官方的开源项目，需要安装!
+
+Dockerfile 让程序在任何地方运行。更多的时候 web服务，redis, mysql,nginx 多个容器 run
+
+Compose
+
+A docker-compose.yml looks like this:
+
+```shell
+version: "3.8"
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+      - logvolume01:/var/log
+    links:
+      - redis
+  redis:
+    image: redis
+volumes:
+  logvolume01: {}
+```
+
+docker-compose up 100 个服务
+
+重要慨念
+
+1. 服务service 容器，应用 （web,redis,mysql...）
+2. 项目project 一组关联的容器。博客 web ,mysql, wp
 
 
 
 #### Docker swarm k8s
+
+集群的方式部署，而不是单机 4台阿里云服务器 2 4g
+
+
 
 ##### Docker Stack
 
