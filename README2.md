@@ -3271,6 +3271,49 @@ docker-compose up 100 个服务
 1. 服务service 容器，应用 （web,redis,mysql...）
 2. 项目project 一组关联的容器。博客 web ,mysql, wp
 
+##### 安装
+
+1. 下载地址
+
+   ```shell
+   sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+   
+   # 更换这个地址可能快点
+   curl -L https://get.daocloud.io/docker/compose/releases/download/1.25.5/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+   ```
+
+   ![image-20201031150417425](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201031150417425.png)
+
+2. 授权操作
+
+   ```shell
+   sudo chmod +x /usr/local/bin/docker-compose
+   # 给了权限
+   [root@localhost bin]# sudo chmod +x docker-compose
+   [root@localhost bin]# 
+   
+   ```
+
+   
+
+3. 如果发现这个就说明安装成功了 体验
+
+   ```shell
+   [root@localhost bin]# docker-compose version
+   docker-compose version 1.25.5, build 8a1c60f6
+   docker-py version: 4.1.0
+   CPython version: 3.7.5
+   OpenSSL version: OpenSSL 1.1.0l  10 Sep 2019
+   [root@localhost bin]# 
+   
+   ```
+
+   
+
+多看官网
+
+##### 体验
+
 
 
 #### Docker swarm k8s
