@@ -3314,7 +3314,112 @@ docker-compose up 100 个服务
 
 ##### 体验
 
+地址：https://docs.docker.com/compose/gettingstarted/
 
+python 应用，计数器。 redis!
+
+```python
+创建app.py
+
+import time
+
+import redis
+from flask import Flask
+
+app = Flask(__name__)
+cache = redis.Redis(host='redis', port=6379)
+
+def get_hit_count():
+    retries = 5
+    while True:
+        try:
+            return cache.incr('hits')
+        except redis.exceptions.ConnectionError as exc:
+            if retries == 0:
+                raise exc
+            retries -= 1
+            time.sleep(0.5)
+
+@app.route('/')
+def hello():
+    count = get_hit_count()
+    return 'Hello World! I have been seen {} times.\n'.format(count)
+```
+
+
+
+![image-20201101185546580](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201101185546580.png)
+
+
+
+最后一步执行
+
+```shell
+[root@localhost composetest]# docker-compose up
+
+```
+
+![image-20201101185738626](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201101185738626.png)
+
+
+
+1. 应用 app.py
+2. Dockerfile将应用打包为镜像
+3. Docker-compose.yml文件（定义整个服务，需要环境，web,redis）完整的上线服务
+4. 启动compose项目(docker-compose up)
+
+```
+Successfully built 7a4065a1b958
+Successfully tagged composetest_web:latest
+WARNING: Image for service web was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Pulling redis (redis:alpine)...
+alpine: Pulling from library/redis
+188c0c94c7c5: Already exists
+fb6015f7c791: Pull complete
+f8890a096979: Pull complete
+cd6e0c12d5bc: Pull complete
+67b3665cee45: Pull complete
+0705890dd1f7: Pull complete
+Digest: sha256:b0e84b6b92149194d99953e44f7d1fa1f470a769529bb05b4164eae60d8aea6c
+Status: Downloaded newer image for redis:alpine
+Creating composetest_web_1   ... done
+Creating composetest_redis_1 ... done
+Attaching to composetest_redis_1, composetest_web_1
+redis_1  | 1:C 01 Nov 2020 12:36:12.407 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+redis_1  | 1:C 01 Nov 2020 12:36:12.407 # Redis version=6.0.9, bits=64, commit=00000000, modified=0, pid=1, just started
+redis_1  | 1:C 01 Nov 2020 12:36:12.407 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+redis_1  | 1:M 01 Nov 2020 12:36:12.412 * Running mode=standalone, port=6379.
+redis_1  | 1:M 01 Nov 2020 12:36:12.413 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+redis_1  | 1:M 01 Nov 2020 12:36:12.413 # Server initialized
+redis_1  | 1:M 01 Nov 2020 12:36:12.413 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+redis_1  | 1:M 01 Nov 2020 12:36:12.413 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo madvise > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled (set to 'madvise' or 'never').
+redis_1  | 1:M 01 Nov 2020 12:36:12.413 * Ready to accept connections
+web_1    |  * Serving Flask app "app.py"
+web_1    |  * Environment: production
+web_1    |    WARNING: This is a development server. Do not use it in a production deployment.
+web_1    |    Use a production WSGI server instead.
+web_1    |  * Debug mode: off
+web_1    |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+
+```
+
+流程：
+
+1. 创建网络
+
+2. 打包执行 Dockerfile-compose.yaml 执行
+
+3. 启动服务
+
+   Creating composetest_web_1 ...done
+
+   Creating composetest_redis_1 ...done
+
+   1. 文件名 
+
+   2. ![image-20201101214510985](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201101214510985.png)
+
+自动的默认规则
 
 #### Docker swarm k8s
 
