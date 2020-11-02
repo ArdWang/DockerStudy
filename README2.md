@@ -3367,8 +3367,11 @@ def hello():
 2. Dockerfile将应用打包为镜像
 3. Docker-compose.yml文件（定义整个服务，需要环境，web,redis）完整的上线服务
 4. 启动compose项目(docker-compose up)
+5. 删除掉 可以使用 rm -f composetest
 
 ```
+输入 docker-compose up
+
 Successfully built 7a4065a1b958
 Successfully tagged composetest_web:latest
 WARNING: Image for service web was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
@@ -3403,6 +3406,8 @@ web_1    |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 
 ```
 
+
+
 流程：
 
 1. 创建网络
@@ -3419,9 +3424,156 @@ web_1    |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 
    2. ![image-20201101214510985](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201101214510985.png)
 
+3. ![image-20201102182436721](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201102182436721.png)
+
+以上是精简版本
+
+
+
 自动的默认规则
 
-#### Docker swarm k8s
+![image-20201102182739416](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201102182739416.png)
+
+1. 服务启动成功
+
+2. 服务正常
+
+   
+
+![image-20201102182839568](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201102182839568.png)
+
+
+
+docker images 
+
+```shell
+docker service ls
+[root@localhost ~]# docker service ls
+Error response from daemon: This node is not a swarm manager. Use "docker swarm init" or "docker swarm join" to connect this node to swarm and try again.
+[root@localhost ~]# 
+
+```
+
+默认的服务名 文件名 服务名 num
+
+多个服务器 集群 A B _num 副本数量
+
+服务 redis 服务 4个副本 10个副本
+
+集群状态，服务都不可能只有一个运行实列 弹性  10 高可用 高并发
+
+kubectl service 负载均衡
+
+
+
+3. 网络规则
+
+   ```shell
+   [root@localhost ~]# docker network ls
+   NETWORK ID          NAME                  DRIVER              SCOPE
+   5952838857be        bridge                bridge              local
+   f96f0ae1f3ef        composetest_default   bridge              local
+   2de7a7c96374        host                  host                local
+   9f5ea29c9ebe        none                  null                local
+   [root@localhost ~]# 
+   
+   ```
+
+   10个服务=》项目 （项目中的内容都在同一个网络下，域名访问）
+
+   mysql:3306 
+
+   10个容器实列： mysql  redis
+
+   ```shell
+   [root@localhost ~]# docker network inspect composetest_default
+   [
+       {
+           "Name": "composetest_default",
+           "Id": "f96f0ae1f3eff0c88e2c9fdfb92f1591911a13010afd68000e8fdc6a1dcc9b4f",
+           "Created": "2020-11-01T18:56:15.110292685+08:00",
+           "Scope": "local",
+           "Driver": "bridge",
+           "EnableIPv6": false,
+           "IPAM": {
+               "Driver": "default",
+               "Options": null,
+               "Config": [
+                   {
+                       "Subnet": "172.19.0.0/16",
+                       "Gateway": "172.19.0.1"
+                   }
+               ]
+           },
+           "Internal": false,
+           "Attachable": true,
+           "Ingress": false,
+           "ConfigFrom": {
+               "Network": ""
+           },
+           "ConfigOnly": false,
+           "Containers": {
+               "578d406e29ec26df6ea72dab670000622487b8149fdffe6acb45e9832ec22772": {
+                   "Name": "composetest_redis_1",
+                   "EndpointID": "3f0050020a6f5c70fba5cefcb745118d34c719bf6ce5cff56ea3dadab2bdc70a",
+                   "MacAddress": "02:42:ac:13:00:03",
+                   "IPv4Address": "172.19.0.3/16",
+                   "IPv6Address": ""
+               },
+               "becc7a5c00cfc31028b5003df80b5ccc2b9957b4a370c7bdd8122c8890a741cb": {
+                   "Name": "composetest_web_1",
+                   "EndpointID": "b277cf798c4378359a2d312ca616216008e5b706e363095b98a608d8682bd514",
+                   "MacAddress": "02:42:ac:13:00:02",
+                   "IPv4Address": "172.19.0.2/16",
+                   "IPv6Address": ""
+               }
+           },
+           "Options": {},
+           "Labels": {
+               "com.docker.compose.network": "default",
+               "com.docker.compose.project": "composetest",
+               "com.docker.compose.version": "1.25.5"
+           }
+       }
+   ]
+   [root@localhost ~]# 
+   
+   ```
+
+   如果在同一个网络下，我们可以直接通过域名访问
+
+
+
+停止：$ docker-compose stop  或者 ctrl-c
+
+```shell
+^CGracefully stopping... (press Ctrl+C again to force)
+Stopping composetest_redis_1 ... done
+Stopping composetest_web_1   ... done
+[root@localhost composetest]# 
+
+```
+
+以前是单个 docker run 启动容器
+
+docker-compose 通过 docker-compose 编写 yaml配置文件 现在可以同通过docker-compose 一键 启动和停止
+
+##### Docker小结
+
+1. Docker镜像 run=>容器
+2. Dockerfile构建镜像(服务打包)
+3. docker-compose启动项目（编排和打包 多个微服务/环境）
+4. Docker网络
+
+
+
+#### yaml规则
+
+
+
+
+
+#### Docker Swarm k8s
 
 集群的方式部署，而不是单机 4台阿里云服务器 2 4g
 
