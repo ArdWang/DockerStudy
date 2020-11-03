@@ -110,7 +110,7 @@ Docker 内核级别的 虚拟化 可以再一个物理机上可以运行很多�
 ### Docker 安装
 ### Docker的基本组成
 
-![image-20200927164421619](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200927164421619.png)
+![image-20200927164421619](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20200927164421619.png)
 
 #### 镜像 （images）
 
@@ -341,7 +341,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker
 ```
 
-![image-20200928190307445](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200928190307445.png)
+![image-20200928190307445](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20200928190307445.png)
 
 
 
@@ -364,7 +364,7 @@ https://processon.com 画图软件
 
 #### 回顾helloworld流程
 
-![image-20200928192037784](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200928192037784.png)
+![image-20200928192037784](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20200928192037784.png)
 
 
 
@@ -386,11 +386,11 @@ Docker为什么比VM快?
 
 2.Docker利用了是宿主机的内核，vm需要时GuestOS
 
-![image-20200928192657778](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200928192657778.png)
+![image-20200928192657778](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20200928192657778.png)
 
 所以说，新建一个容器的时候，dokcer不需要虚拟机一样重新加载一个操作系统，减少引导，虚拟机是加载CuestOS,分钟级别的，而docker是利用宿主机的操作系统这是一个非常快的
 
-![image-20200928193010625](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200928193010625.png)
+![image-20200928193010625](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20200928193010625.png)
 
 学习完毕所有的命令 回过头来这段理论，就会很清晰
 
@@ -1084,7 +1084,7 @@ docker data
 
 ##### 小结
 
-![image-20201003191738994](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201003191738994.png)
+![image-20201003191738994](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201003191738994.png)
 
 ![image-20201003191953690](C:\Users\Administrator\Desktop\image-20201003191953690.png)
 
@@ -1228,7 +1228,7 @@ Stop one or more running containers
 
 ##### 端口暴露的慨念
 
-![image-20201004132616072](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201004132616072.png)
+![image-20201004132616072](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201004132616072.png)
 
 
 
@@ -1341,7 +1341,7 @@ docker run -d --name elasticsearch02 -p 9200:9200 -p 9300:9300 -e "discovery.typ
 
 作业：使用 kibana 内部端口  es 如何才能连接过去
 
-![image-20201005194011198](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201005194011198.png)
+![image-20201005194011198](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201005194011198.png)
 
 
 
@@ -1375,25 +1375,25 @@ http://192.168.3.47:9000
 
 
 
-![image-20201006084854607](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201006084854607.png)
+![image-20201006084854607](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201006084854607.png)
 
 
 
 选择本地的
 
-![image-20201006084912688](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201006084912688.png)
+![image-20201006084912688](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201006084912688.png)
 
 
 
 然后是用一个这样子的面板
 
-![image-20201006085017889](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201006085017889.png)
+![image-20201006085017889](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201006085017889.png)
 
 
 
 可视化面板
 
-![image-20201006085419591](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201006085419591.png)
+![image-20201006085419591](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201006085419591.png)
 
 
 
@@ -1435,7 +1435,7 @@ UnionFS(联合文件系统)
 
 docker镜像加载原理
 
-![image-20201006090057454](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201006090057454.png)
+![image-20201006090057454](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201006090057454.png)
 
 虚拟机是分钟级别
 
@@ -1445,13 +1445,13 @@ docker镜像加载原理
 
 ##### 理解
 
-![image-20201007190506164](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201007190506164.png)
+![image-20201007190506164](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201007190506164.png)
 
-![image-20201007190650064](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201007190650064.png)
+![image-20201007190650064](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201007190650064.png)
 
-![image-20201007190748577](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201007190748577.png)
+![image-20201007190748577](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201007190748577.png)
 
-![image-20201007191100184](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201007191100184.png)
+![image-20201007191100184](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201007191100184.png)
 
 ```java
 特点
@@ -1463,7 +1463,7 @@ Dokcer 镜像都是只读的，当容器启动时，一个新的可写层被加�
 
 pull 远程下载下来了
 
-![image-20201007191756770](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201007191756770.png)
+![image-20201007191756770](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201007191756770.png)
 
 
 
@@ -1543,7 +1543,7 @@ Docker容器中产生的数据可以同步到本地 Docker容器产生的数据�
 
 
 
-![image-20201009183613283](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201009183613283.png)
+![image-20201009183613283](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201009183613283.png)
 
 
 
@@ -1566,11 +1566,11 @@ java.tar.gz  kuangshen.java  newproject  project  soft  test.java  xiaowang
 
 挂载
 
-![image-20201009184813285](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201009184813285.png)
+![image-20201009184813285](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201009184813285.png)
 
 测试文件同步的效果
 
-![image-20201009185123821](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201009185123821.png)
+![image-20201009185123821](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201009185123821.png)
 
 
 
@@ -1584,7 +1584,7 @@ java.tar.gz  kuangshen.java  newproject  project  soft  test.java  xiaowang
 
 4.容器内依旧可以同步
 
-![image-20201009185540614](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201009185540614.png)
+![image-20201009185540614](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201009185540614.png)
 
 好处：我们以后修改 只需要在本地修改即可，容器内部会自动同步!
 
@@ -1798,7 +1798,7 @@ Successfully tagged kuangshen/centos:1.0
 
 ```
 
-![image-20201012182856703](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201012182856703.png)
+![image-20201012182856703](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201012182856703.png)
 
 ```
 启动自己写的容器
@@ -1811,7 +1811,7 @@ Successfully tagged kuangshen/centos:1.0
 
 查看卷挂载的路径
 
-![image-20201012184104403](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201012184104403.png)
+![image-20201012184104403](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201012184104403.png)
 
 
 
@@ -1841,7 +1841,7 @@ continer.txt
 
 两个mysql同步数据
 
-![image-20201013155020660](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201013155020660.png)
+![image-20201013155020660](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201013155020660.png)
 
 
 
@@ -1906,11 +1906,11 @@ drwxr-xr-x.   2 root root   6 Oct 13 07:52 volume02
 
 ```
 
-![image-20201013160302902](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201013160302902.png)
+![image-20201013160302902](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201013160302902.png)
 
 通过它同步数据共享
 
-![image-20201013160617254](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201013160617254.png)
+![image-20201013160617254](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201013160617254.png)
 
 
 
@@ -1918,7 +1918,7 @@ drwxr-xr-x.   2 root root   6 Oct 13 07:52 volume02
 可以测试的范围 docker01 docker02 docker03 可以删除其中一个 测试还是可以有数据的
 ```
 
-![image-20201013161056465](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201013161056465.png)
+![image-20201013161056465](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201013161056465.png)
 
 
 
@@ -1963,9 +1963,9 @@ dockerfile 核心使用来构建 Docker得镜像得文件! 命令参数得脚本
 
 查看一下官网是怎么做得
 
-![image-20201014182547266](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201014182547266.png)
+![image-20201014182547266](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201014182547266.png)
 
-![image-20201014182710737](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201014182710737.png)
+![image-20201014182710737](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201014182710737.png)
 
 
 
@@ -1988,7 +1988,7 @@ dockerfile 核心使用来构建 Docker得镜像得文件! 命令参数得脚本
 
 
 
-![image-20201014183512968](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201014183512968.png)
+![image-20201014183512968](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201014183512968.png)
 
 
 
@@ -2008,7 +2008,7 @@ Docker容器 容器时镜像运行起来的服务器
 
 ##### DockerFile的指令
 
-![image-20201015181259703](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201015181259703.png)
+![image-20201015181259703](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201015181259703.png)
 
 ```java
 FROM  # 基础镜像 一切从这里开始构建
@@ -2034,7 +2034,7 @@ ENV  # 构建的时候设置环境变量 es mysql -用户名 密码
 
 DockerHUb 中的镜像99% 镜像都是从这个基础镜像Form scratch 配置需要的软件和配置构建的
 
-![image-20201016182053111](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201016182053111.png)
+![image-20201016182053111](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201016182053111.png)
 
 ```java
 CD home 目录下
@@ -2064,15 +2064,15 @@ Successfully tagged mycentos:0.1
 
 对比之前原生的 centos 
 
-![image-20201016191645435](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201016191645435.png)
+![image-20201016191645435](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201016191645435.png)
 
 我们自己写的
 
-![image-20201016191656865](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201016191656865.png)
+![image-20201016191656865](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201016191656865.png)
 
 我们可以列出咱们本地镜像变更历史
 
-![image-20201016191816001](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201016191816001.png)
+![image-20201016191816001](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201016191816001.png)
 
 我们平时拿到一个镜像 可以研究一下他是怎么做的？
 
@@ -2247,11 +2247,11 @@ Dockerfile中很多的命令都十分的相似 我们需要了解他们的区别
 
 1. 准备镜像文件 tomcat压缩包 jdk压缩包
 
-   ![image-20201018164247104](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201018164247104.png)
+   ![image-20201018164247104](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201018164247104.png)
 
 2. 编写dockerfile文件，官方命令 Dockerfile build的时候自动寻找这个文件，就不需要-f指定了
 
-![image-20201018164355540](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201018164355540.png)
+![image-20201018164355540](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201018164355540.png)
 
 
 
@@ -2446,7 +2446,7 @@ build
    
    ```
 
-   ![image-20201019185704188](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019185704188.png)
+   ![image-20201019185704188](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201019185704188.png)
 
    成功之后可以搜索
 
@@ -2468,19 +2468,19 @@ build
 
 3. 找到命名空间 并创建命名空间 为了隔离
 
-   ![image-20201019190748080](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019190748080.png)
+   ![image-20201019190748080](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201019190748080.png)
 
 4. 创建容器镜像
 
-   ![image-20201019190918543](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019190918543.png)
+   ![image-20201019190918543](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201019190918543.png)
 
-   ![image-20201019190948002](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019190948002.png)
+   ![image-20201019190948002](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201019190948002.png)
 
 5. 浏览一下这个页面的信息
 
-   ![image-20201019191113777](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019191113777.png)
+   ![image-20201019191113777](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201019191113777.png)
 
-   ![image-20201019191145718](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019191145718.png)
+   ![image-20201019191145718](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201019191145718.png)
 
    ```shell
    # 退出当前的镜像
@@ -2506,11 +2506,11 @@ build
 
    提交成功后 是下载版本
 
-   ![image-20201019192821310](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019192821310.png)
+   ![image-20201019192821310](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201019192821310.png)
 
 
 
-![image-20201019193019559](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019193019559.png)
+![image-20201019193019559](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201019193019559.png)
 
 
 
@@ -2520,14 +2520,14 @@ DokcerHub 阿里云 也可以公有也有私有的 docker pull 拉下来就可�
 
 ##### 小结
 
-![image-20201020180844625](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020180844625.png)
+![image-20201020180844625](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201020180844625.png)
 
 ```
 docker save -o 保存
 docker load -i -q
 ```
 
-![image-20201020181222695](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020181222695.png)
+![image-20201020181222695](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201020181222695.png)
 
 
 
@@ -2552,7 +2552,7 @@ docker load -i -q
 [root@localhost ~]# ip addr
 ```
 
-![image-20201020182220206](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020182220206.png)
+![image-20201020182220206](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201020182220206.png)
 
 
 
@@ -2562,7 +2562,7 @@ docker load -i -q
 # 问题 dokcer是如何处理容器的网络
 ```
 
-![image-20201020182326501](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020182326501.png)
+![image-20201020182326501](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201020182326501.png)
 
 ```shell
 docker run -d -P --name tomcat01 tomcat
@@ -2597,13 +2597,13 @@ PING 172.17.0.2 (172.17.0.2) 56(84) bytes of data.
 
    再次执行测试 ip addr
 
-![image-20201020184122661](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020184122661.png)
+![image-20201020184122661](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201020184122661.png)
 
 2. 在启动一个容器测试 发现又多了一对网卡
 
-   ![image-20201020184453170](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020184453170.png)
+   ![image-20201020184453170](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201020184453170.png)
 
-![image-20201020184606130](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020184606130.png)
+![image-20201020184606130](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201020184606130.png)
 
 ```shell
 我们发现这些容器网卡，这是一对一对的
@@ -2622,7 +2622,7 @@ PING 172.17.0.2 (172.17.0.2) 56(84) bytes of data.
 
    网络类型图
 
-   ![image-20201020185719476](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201020185719476.png)
+   ![image-20201020185719476](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201020185719476.png)
 
    结论 tomcat01和tomcat02都是共用一个路由器 docker0路由
    
@@ -2646,7 +2646,7 @@ PING 172.17.0.2 (172.17.0.2) 56(84) bytes of data.
 
 Docker 使用的是 Linux桥接 宿主机是一个docker容器的网桥 docker0
 
-![image-20201021183605814](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201021183605814.png)
+![image-20201021183605814](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201021183605814.png)
 
 192.168.0.1 路由器
 
@@ -2688,13 +2688,13 @@ rtt min/avg/max/mdev = 0.048/0.057/0.089/0.018 ms
 docker exec -it tomcat02 ping tomcat03 是不可以 ping通的
 ```
 
-![image-20201022181626832](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201022181626832.png)
+![image-20201022181626832](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201022181626832.png)
 
 
 
 探究
 
-![image-20201022181716322](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201022181716322.png)
+![image-20201022181716322](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201022181716322.png)
 
 ```shell
 docker inspect tomcat02
@@ -2707,7 +2707,7 @@ hosts 破解绑定
 127.0.0.1 www.baidu.com
 ```
 
-![image-20201022182318712](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201022182318712.png)
+![image-20201022182318712](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201022182318712.png)
 
 ```
 # 原理探究
@@ -2762,7 +2762,7 @@ ff02::2	ip6-allrouters
 
 
 
-![image-20201023181444502](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201023181444502.png)
+![image-20201023181444502](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201023181444502.png)
 
 
 
@@ -2828,7 +2828,7 @@ NETWORK ID          NAME                DRIVER              SCOPE
 
 ```
 
-![image-20201023182446649](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201023182446649.png)
+![image-20201023182446649](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201023182446649.png)
 
 
 
@@ -2840,7 +2840,7 @@ NETWORK ID          NAME                DRIVER              SCOPE
 
 ```
 
-![image-20201023182710456](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201023182710456.png)
+![image-20201023182710456](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201023182710456.png)
 
 自己搭建网络得好处
 
@@ -2883,20 +2883,20 @@ redis- 不同得集群使用不同得网络，保证集群安全和健康得
 
 mysql- 
 
-![image-20201023183131472](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201023183131472.png)
+![image-20201023183131472](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201023183131472.png)
 
 
 
 #### 网络连通
 
-![image-20201024174447989](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201024174447989.png)
+![image-20201024174447989](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201024174447989.png)
 
 ```shell
 [root@localhost ~]# docker network connect --help
 
 ```
 
-![image-20201024174548978](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201024174548978.png)
+![image-20201024174548978](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201024174548978.png)
 
 ```shell
 # 测试打通 tomcat01  mynet
@@ -2912,7 +2912,7 @@ ping: tomcat-net-01: Name or service not known
 [root@localhost ~]# 
 ```
 
-![image-20201024174858139](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201024174858139.png)
+![image-20201024174858139](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201024174858139.png)
 
 结论： 假设要跨网络操作别人 就需要使用docker connect 连通...
 
@@ -2920,7 +2920,7 @@ ping: tomcat-net-01: Name or service not known
 
 #### 实战：部署 Redis集群
 
-![image-20201025161510477](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201025161510477.png)
+![image-20201025161510477](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201025161510477.png)
 
 
 
@@ -3046,7 +3046,7 @@ M: e35addb81c76fd5e04590b321b000e1349c7d49a 172.38.0.13:6379
 
 我挂掉redis-3
 
-![image-20201025170735025](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201025170735025.png)
+![image-20201025170735025](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201025170735025.png)
 
 
 
@@ -3054,7 +3054,7 @@ M: e35addb81c76fd5e04590b321b000e1349c7d49a 172.38.0.13:6379
 
 
 
-![image-20201025170700889](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201025170700889.png)
+![image-20201025170700889](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201025170700889.png)
 
 
 
@@ -3148,7 +3148,7 @@ Hello,Kuangshen[root@localhost idea]#
 
 最红获取地址 http://192.168.3.47:32777/hello
 
-![image-20201026195020728](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026195020728.png)
+![image-20201026195020728](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201026195020728.png)
 
 以后使用了docker之后，给别人交付的就是一个镜像即可
 
@@ -3188,7 +3188,7 @@ sudo yum install -y yum-utils
 
 ```
 
-![image-20201028182811844](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201028182811844.png)
+![image-20201028182811844](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201028182811844.png)
 
 
 
@@ -3282,7 +3282,7 @@ docker-compose up 100 个服务
    curl -L https://get.daocloud.io/docker/compose/releases/download/1.25.5/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
    ```
 
-   ![image-20201031150417425](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201031150417425.png)
+   ![image-20201031150417425](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201031150417425.png)
 
 2. 授权操作
 
@@ -3348,7 +3348,7 @@ def hello():
 
 
 
-![image-20201101185546580](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201101185546580.png)
+![image-20201101185546580](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201101185546580.png)
 
 
 
@@ -3359,7 +3359,7 @@ def hello():
 
 ```
 
-![image-20201101185738626](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201101185738626.png)
+![image-20201101185738626](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201101185738626.png)
 
 
 
@@ -3422,9 +3422,23 @@ web_1    |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 
    1. 文件名 
 
-   2. ![image-20201101214510985](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201101214510985.png)
+   2. ![image-20201101214510985](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201101214510985.png)
 
-3. ![image-20201102182436721](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201102182436721.png)
+      ```shell
+      version: '3.8'
+      services: 
+      	web:
+      		container_name:python-pip
+      	build: .
+          ports:
+          	- "5000:5000"
+          redis:
+          	image:"redis:apline"
+      ```
+
+      
+
+3. ![image-20201102182436721](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201102182436721.png)
 
 以上是精简版本
 
@@ -3432,7 +3446,7 @@ web_1    |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 
 自动的默认规则
 
-![image-20201102182739416](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201102182739416.png)
+![image-20201102182739416](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201102182739416.png)
 
 1. 服务启动成功
 
@@ -3440,7 +3454,7 @@ web_1    |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 
    
 
-![image-20201102182839568](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201102182839568.png)
+![image-20201102182839568](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201102182839568.png)
 
 
 
@@ -3568,6 +3582,80 @@ docker-compose 通过 docker-compose 编写 yaml配置文件 现在可以同通�
 
 
 #### yaml规则
+
+docker-compose.yaml 核心
+
+```shell
+# 3层
+version # 版本
+services # 服务
+服务1：web
+
+服务配置
+images
+build
+network
+服务2：redis
+服务3：...
+# 其它配置 网络配置 全局规则
+volumes:
+networks:
+configs:
+```
+
+```shell
+depends_on
+Express dependency between services. Service dependencies cause the following behaviors:
+
+docker-compose up starts services in dependency order. In the following example, db and redis are started before web.
+docker-compose up SERVICE automatically includes SERVICE’s dependencies. In the example below, docker-compose up web also creates and starts db and redis.
+docker-compose stop stops services in dependency order. In the following example, web is stopped before db and redis.
+Simple example:
+
+version: "3.8"
+services:
+  web:
+    build: .
+    depends_on:
+      - db
+      - redis
+  redis:
+    image: redis
+  db:
+    image: postgres
+```
+
+```shell
+deploy
+Added in version 3 file format.
+
+Specify configuration related to the deployment and running of services. This only takes effect when deploying to a swarm with docker stack deploy, and is ignored by docker-compose up and docker-compose run.
+
+version: "3.8"
+services:
+  redis:
+    image: redis:alpine
+    deploy:
+      replicas: 6
+      placement:
+        max_replicas_per_node: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+```
+
+
+
+查看网址：https://docs.docker.com/compose/compose-file
+
+学习要掌握规律 只要多写多看配置文件 compose.yaml配置文件
+
+1. 官方文档
+2. 开源项目
+
+redis mysql mq!
 
 
 
