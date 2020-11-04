@@ -3657,6 +3657,86 @@ services:
 
 redis mysql mq!
 
+#### 开源项目
+
+##### 博客
+
+https://docs.docker.com/compose/wordpress/
+
+开始创建
+
+1. 
+
+```shell
+[root@localhost ~]# cd ..
+[root@localhost /]# cd home
+[root@localhost home]# mkdir my_wordpress
+[root@localhost home]# cd my_wordpress
+[root@localhost my_wordpress]# ll
+
+```
+
+2. 创建 docker-compose.yml
+
+```shell
+version: '3.3'
+
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: somewordpress
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: wordpress
+
+   wordpress:
+     depends_on:
+       - db
+     image: wordpress:latest
+     ports:
+       - "8000:80"
+     restart: always
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: wordpress
+       WORDPRESS_DB_NAME: wordpress
+volumes:
+    db_data: {}
+```
+
+3. 启动
+
+   ```shell
+   docker-compose up -d #这是后台启动
+   
+   [root@localhost my_wordpress]# docker-compose up -d
+   Starting my_wordpress_db_1 ... done
+   Starting my_wordpress_wordpress_1 ... done
+   [root@localhost my_wordpress]# 
+   
+   ```
+
+   
+
+然后下载 文件准备齐全 一键启动项目
+
+一切很简单！
+
+linux docker k8s 12K-20K
+
+前提掌握 基础 原理 网络 服务 集群 错误排查 日志
+
+
+
+下载程序，安装数据库，配置
+
+compose 应用 一键启动
+
 
 
 
