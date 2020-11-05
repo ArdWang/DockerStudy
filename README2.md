@@ -3727,6 +3727,61 @@ volumes:
 
 一切很简单！
 
+停止
+
+```shell
+docker-compose down
+```
+
+重新打包
+
+```shell
+docker-compose up --build
+```
+
+
+
+###### 小结：
+
+未来项目只要有 docker-compose文件 启动编排的容器
+
+公司：docker-compose 直接启动
+
+网上开源项目 docker-compose 一键搞定
+
+假设项目要重新部署
+
+```shell
+docker-compose up --build # 重新构建
+```
+
+##### 总结：
+
+工程、服务、容器
+
+项目compose 三层
+
+工程 project
+
+服务
+
+容器 运行实列 docker k8s 容器 pods  docker run  kubectl apply -f "xxx.yaml"
+
+Docker Compose 搞定
+
+##### 实战: 计数器
+
+1. 编写项目的微服务
+2. dockerfile构建镜像
+3. docker-compose.yaml编排项目
+4. 提交到服务器 docker-compose up -d
+
+
+
+
+
+
+
 linux docker k8s 12K-20K
 
 前提掌握 基础 原理 网络 服务 集群 错误排查 日志
@@ -3739,11 +3794,11 @@ compose 应用 一键启动
 
 
 
-
-
 #### Docker Swarm k8s
 
 集群的方式部署，而不是单机 4台阿里云服务器 2 4g
+
+
 
 
 
