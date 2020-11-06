@@ -3798,13 +3798,114 @@ compose 应用 一键启动
 
 集群的方式部署，而不是单机 4台阿里云服务器 2 4g
 
+##### 购买服务器
 
+```shell
+4台 2G
+```
+
+登录阿里云购买服务器
+
+![image-20201106180833201](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201106180833201.png)
+
+![image-20201106181049915](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201106181049915.png)
+
+
+
+
+
+#### 4 台机器安装Docker
+
+xshell 4台同步安装
+
+![image-20201106182120291](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201106182120291.png)
+
+##### 安装gcc环境
+
+```shell
+yum -y install gcc
+yum -y install gcc-c++
+```
+
+
+
+##### 卸载旧版本
+
+```shell
+$ sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+```
+
+##### 安装包
+
+```shell
+$ sudo yum install -y yum-utils
+```
+
+##### 设置镜像仓库
+
+```shell
+yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+```
+
+##### 更新yum的索引
+
+```shell
+yum makecache fast
+```
+
+##### 安装Docker
+
+```shell
+yum install -y docker-ce docker-ce-cli containerd.io
+```
+
+##### 启动Docker
+
+```shell
+systemctl start docker
+```
+
+##### 查看是否安装成功
+
+```shell
+docker version
+```
+
+##### 配置加速器
+
+```shell
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://bgbkcnlz.mirror.aliyuncs.com"]
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+```shell
+docker ps #来测试是否成功
+```
+
+技巧：xshell尽力减少使用时间
 
 
 
 ##### Docker Stack
 
 #### Docker Secret
+
+
+
+
 
 加油制作
 
