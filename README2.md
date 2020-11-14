@@ -3810,9 +3810,9 @@ compose 应用 一键启动
 
 ![image-20201106181049915](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201106181049915.png)
 
+![image-20201114082434648](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201114082434648.png)
 
-
-
+1 主 3从
 
 #### 4 台机器安装Docker
 
@@ -3903,15 +3903,507 @@ docker ps #来测试是否成功
 
 完成新得公司项目来做这个Docker
 
+已经快完成了继续努力
+
+工作模式
+
+![image-20201114083802759](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201114083802759.png)
+
+1-1
+
+##### 搭建集群
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker swarm --help
+
+Usage:	docker swarm COMMAND
+
+Manage Swarm
+
+Commands:
+  ca          Display and rotate the root CA
+  init        Initialize a swarm
+  join        Join a swarm as a node and/or manager
+  join-token  Manage join tokens
+  leave       Leave the swarm
+  unlock      Unlock swarm
+  unlock-key  Manage the unlock key
+  update      Update the swarm
+
+Run 'docker swarm COMMAND --help' for more information on a command.
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# 
+
+```
+
+```shell
+docker swarm init --help
+```
+
+![image-20201114084314720](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201114084314720.png)
+
+
+
+地址 172.19.79.243/16 --advertise-addr
+
+```shell
+docker swarm init --advertise-addr 172.19.79.243 
+```
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker swarm init --advertise-addr 172.19.79.243
+Swarm initialized: current node (iesefc2t7fajhmnxxwebj2vq1) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2vrl8wr7umcjy4aqyn2i8zgfuqc551vmy7l16q580kl2576wxj-ej4b1q41alwu4tgyz1xn9wszp 172.19.79.243:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# 
+
+```
+
+初始化节点 docker swarm init
+
+docker swarm join 加入一个节点!
+
+```shell
+# 获取令牌
+docker swarm join-token manager
+docker swarm join-token worker
+```
+
+```shell
+docker swarm join --token SWMTKN-1-2vrl8wr7umcjy4aqyn2i8zgfuqc551vmy7l16q580kl2576wxj-ej4b1q41alwu4tgyz1xn9wszp 172.19.79.243:2377
+
+```
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker node ls
+ID                            HOSTNAME                  STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+kuzdt4pks1mfr2amoz85c2u01     iZm5ejexzuavsyu8u0uxo5Z   Ready               Active                                  19.03.13
+iesefc2t7fajhmnxxwebj2vq1 *   iZm5ejexzuavsyu8u0uxo7Z   Ready               Active              Leader              19.03.13
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker swarm join-token worker
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2vrl8wr7umcjy4aqyn2i8zgfuqc551vmy7l16q580kl2576wxj-ej4b1q41alwu4tgyz1xn9wszp 172.19.79.243:2377
+
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker node ls
+ID                            HOSTNAME                  STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+kuzdt4pks1mfr2amoz85c2u01     iZm5ejexzuavsyu8u0uxo5Z   Ready               Active                                  19.03.13
+ytuu1k35mnk4r3b828fph22fx     iZm5ejexzuavsyu8u0uxo6Z   Ready               Active                                  19.03.13
+iesefc2t7fajhmnxxwebj2vq1 *   iZm5ejexzuavsyu8u0uxo7Z   Ready               Active              Leader              19.03.13
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker swarm join-token manager
+To add a manager to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2vrl8wr7umcjy4aqyn2i8zgfuqc551vmy7l16q580kl2576wxj-5hv0j3fby4vlnwlor7kcii1t7 172.19.79.243:2377
+
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker node ls
+ID                            HOSTNAME                  STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+8ulyvcztotl0rdwur7u6lw58b     iZm5ejexzuavsyu8u0uxo4Z   Ready               Active              Reachable           19.03.13
+kuzdt4pks1mfr2amoz85c2u01     iZm5ejexzuavsyu8u0uxo5Z   Ready               Active                                  19.03.13
+ytuu1k35mnk4r3b828fph22fx     iZm5ejexzuavsyu8u0uxo6Z   Ready               Active                                  19.03.13
+iesefc2t7fajhmnxxwebj2vq1 *   iZm5ejexzuavsyu8u0uxo7Z   Ready               Active              Leader              19.03.13
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# 
+
+```
+
+到此节点搭建进去了！
+
+1. 生成主节点
+
+2. 加入(管理者，worker)
+
+   
+
+目标：双重目标
+
+##### Raft 一致性协议了解
+
+主从双从：假设一个节点挂了 其它节点是否可以使用
+
+Raft协议 保证人数节点存活才可以使用 只要>1 集群至少3台
+
+1. 将docker1机器停止 双主 另外一个主节点
+
+![image-20201114090211949](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201114090211949.png)
+
+2. 将其它得节点离开
+
+   ```shell
+   [root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker node ls
+   ID                            HOSTNAME                  STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+   8ulyvcztotl0rdwur7u6lw58b     iZm5ejexzuavsyu8u0uxo4Z   Ready               Active              Reachable           19.03.13
+   kuzdt4pks1mfr2amoz85c2u01     iZm5ejexzuavsyu8u0uxo5Z   Ready               Active                                  19.03.13
+   ytuu1k35mnk4r3b828fph22fx     iZm5ejexzuavsyu8u0uxo6Z   Down                Active                                  19.03.13
+   iesefc2t7fajhmnxxwebj2vq1 *   iZm5ejexzuavsyu8u0uxo7Z   Ready               Active              Leader              19.03.13
+   [root@iZm5ejexzuavsyu8u0uxo7Z ~]# 
+   
+   ```
+
+   
+
+3.
+
+​    work就是工作得，管理节点操作，3台机器设置了管理节点
+
+```shell
+docker node ls
+```
+
+十分简单 集群可以用 3个主节点> 1台机子管理节点存货
+
+Raft协议 保证大多数节点存活 才可以使用 高可用
+
+##### 体会
+
+弹性、扩缩容 集群
+
+以后告别 docker run
+
+docker-compose up! 启动一个项目 单机
+
+集群 swarm ->docker service ls
+
+k8s service pods
+
+容器=》服务
+
+redis = 3 份
+
+集群 高可用 web-redis 3台 分布不同得机器上
+
+容器=》服务=》副本
+
+redis服务 =》10个副本 同时开启10个redis容器
+
+体验：创建服务，动态扩展服务
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker service --help
+
+Usage:	docker service COMMAND
+
+Manage services
+
+Commands:
+  create      Create a new service
+  inspect     Display detailed information on one or more services
+  logs        Fetch the logs of a service or task
+  ls          List services
+  ps          List the tasks of one or more services
+  rm          Remove one or more services
+  rollback    Revert changes to a service's configuration
+  scale       Scale one or multiple replicated services
+  update      Update a service
+
+Run 'docker service COMMAND --help' for more information on a command.
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# 
+
+```
+
+灰度发布 金丝雀发布!
+
+停止网络 404！
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker service --help
+```
+
+```shell
+docker service create -p 8888:80 --name my-nginx nginx
+```
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker service create -p 8888:80 --name my-nginx nginx
+tkl3mt5rv09ja76n7t9ji4gn9
+overall progress: 1 out of 1 tasks 
+1/1: running   [==================================================>] 
+verify: Service converged 
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# 
+
+```
+
+```shell
+docker run 容器启动 不具有扩缩容
+docker service 服务 具有扩缩容
+```
+
+查看服务
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+tkl3mt5rv09j        my-nginx            replicated          1/1                 nginx:latest        *:8888->80/tcp
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# 
+
+```
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker service update --replicas 3 my-nginx
+my-nginx
+overall progress: 3 out of 3 tasks 
+1/3: running   [==================================================>] 
+2/3: running   [==================================================>] 
+3/3: running   [==================================================>] 
+verify: Service converged 
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# 
+
+```
+
+服务 集群中任意节点可以访问，服务有多个副本扩缩容
+
+弹性 扩缩容 10台  10000台 卖给别人 虚拟化
+
+服务得高可用 任何企业 云！
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker service scale my-nginx=5
+```
+
+更新副本书 一莫一样
+
+移除服务
+
+```shell
+docker service rm my-nginx
+```
+
+Docker swarm 其实并不难只要会搭建集群 会启动服务 会动态管理 就可以了
+
+swarm-> k8s 副本 多容器
+
+
+
+##### 慨念总结
+
+swarm 
+
+集群得管理和编号 docker 可以初始化一个swarm集群 其它得节点可以加入 管理 工作者
+
+Node
+
+就是一个docker得节点 多个节点就组成一个网络集群
+
+service
+
+任务 可以再管理节点或者工作节点运行 核心 用户访问! service create
+
+Task
+
+容器内得命令 细节任务
+
+![image-20201114094520362](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201114094520362.png)
+
+
+
+逻辑是不变得
+
+命令 manager 调度任务 工作节点 创建容器 自动创建维护
+
+kubectl service api!
+
+kubectl get pod
+
+![image-20201114094913539](https://gitee.com/mydream_xiaowang/dockerimage/raw/master/dockerimage/image-20201114094913539.png)
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker service create --mode global --name help alpine ping baidu.com
+
+```
+
+网络模式
+
+"PublishMode": "ingress"
+
+Swarm:
+
+ingress: 
+
+特殊得 Overlay 网络 负载均衡得功能 IPVS VIP 
+
+Overlay:
+
+虽然docker在4台机器上 
+
+
+
+```shell
+  [root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker network inspect ingress
+
+  "Labels": {},
+        "Peers": [
+            {
+                "Name": "f49c077701ee",
+                "IP": "172.19.79.243"
+            },
+            {
+                "Name": "70b027a8dfed",
+                "IP": "172.19.79.245"
+            },
+            {
+                "Name": "c1936a937d27",
+                "IP": "172.19.79.242"
+            },
+            {
+                "Name": "e66b431372a3",
+                "IP": "172.19.79.244"
+            }
+
+```
+
+
+
+网络变成整体
+
+
+
 ##### Docker Stack
+
+docker-compose 单机部署项目
+
+Docker stack部署 集群部署
+
+```shell
+# 单机
+docker compose up -d wordpress.yaml
+# 集群
+docker stack deploy wordpress.yaml
+# docker-compose 文件
+```
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker stack
+
+Usage:	docker stack [OPTIONS] COMMAND
+
+Manage Docker stacks
+
+Options:
+      --orchestrator string   Orchestrator to use (swarm|kubernetes|all)
+
+Commands:
+  deploy      Deploy a new stack or update an existing stack
+  ls          List stacks
+  ps          List the tasks in the stack
+  rm          Remove one or more stacks
+  services    List the services in the stack
+
+Run 'docker stack COMMAND --help' for more information on a command.
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# 
+
+```
+
+
+
+```shell
+version: "3"
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - 80:80
+    deploy:
+      mode: replicated
+      replicas: 4
+
+  visualizer:
+    image: dockersamples/visualizer
+    ports:
+      - "9001:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+  portainer:
+    image: portainer/portainer
+    ports:
+      - "9000:9000"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+```
+
+
 
 #### Docker Secret
 
+安全 配置密码 证书 加密
+
+```shell
+docker secret
+```
+
+#### Docker Config
+
+```shell
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# docker config
+
+Usage:	docker config COMMAND
+
+Manage Docker configs
+
+Commands:
+  create      Create a config from a file or STDIN
+  inspect     Display detailed information on one or more configs
+  ls          List configs
+  rm          Remove one or more configs
+
+Run 'docker config COMMAND --help' for more information on a command.
+[root@iZm5ejexzuavsyu8u0uxo7Z ~]# 
+
+```
 
 
 
+#### Docker 下半场
 
-加油制作
+Docker compose swarm
+
+了解学习方式
+
+网上找案列跑起来 查看命令帮助文档 --help
+
+
+
+#### 扩展到K8S
+
+##### 云原生时代 大趋势
+
+云应用
+
+电商
+
+在线教育平台
+
+下载-》配置
+
+精通 K8s  10台机器以上
+
+Go语言 必须掌握 java Go
+
+Docker是Go开发 k8s也是Go开发
+
+Etcd都是 Go得项目 Go是天生得并发计算
+
+go效率接近C语言 go 指针 
+
+入门
+
+基础语法
+
+高级对象
+
+框架 如何操作数据库
+
+
 
 
 
