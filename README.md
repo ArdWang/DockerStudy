@@ -394,7 +394,7 @@ CREATE USER 'haproxy'@'%' IDENTIFIED BY '';
 
 
 
-
+更新到其它的连接 https://github.com/ArdWang/DockerStudy/blob/master/README2.md
 
 
 
