@@ -4419,4 +4419,6 @@ CI/CD 之jenkins 流水线！
 
 最近一段时间 身体原因 参加了锻炼 要努力学习了加油
 
-最近一个月都是这样子 锻炼 
+目前对docker有了新的认识和了解
+   Starting my_wordpress_wordpress_1 ... done对
+   Starting my_wordpress_wordpress_1 ... done
