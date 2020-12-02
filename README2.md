@@ -4422,3 +4422,5 @@ CI/CD 之jenkins 流水线！
 目前对docker有了新的认识和了解
    Starting my_wordpress_wordpress_1 ... done对
    Starting my_wordpress_wordpress_1 ... done
+
+好久没有更新程序了 需要重新学习了 加油
